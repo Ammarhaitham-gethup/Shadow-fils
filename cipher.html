@@ -1,0 +1,5552 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>الشفرات ال6</title>
+
+
+<style>
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root{
+
+    --bg:#030305;
+    --bg2:#07070b;
+
+    --panel:rgba(255,255,255,.035);
+    --panel2:rgba(255,255,255,.055);
+
+    --border:rgba(255,255,255,.075);
+    --border-bright:rgba(180,50,255,.38);
+
+    --purple:#b432ff;
+    --purple-light:#dc9cff;
+    --purple-dark:#7020a0;
+
+    --text:#ffffff;
+    --muted:rgba(255,255,255,.45);
+    --muted2:rgba(255,255,255,.25);
+
+    --danger:#ff4965;
+
+    --radius:20px;
+
+    --shadow:
+        0 25px 80px rgba(0,0,0,.45);
+
+    --purple-shadow:
+        0 0 40px rgba(180,50,255,.14);
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    min-height:100vh;
+
+    color:var(--text);
+
+    font-family:
+        Arial,
+        Tahoma,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 50% -10%,
+            rgba(180,50,255,.18),
+            transparent 33%
+        ),
+
+        radial-gradient(
+            circle at 100% 80%,
+            rgba(105,25,150,.11),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            circle at 0% 35%,
+            rgba(80,30,120,.07),
+            transparent 27%
+        ),
+
+        linear-gradient(
+            145deg,
+            #020204,
+            #050507 45%,
+            #030305
+        );
+
+    overflow-x:hidden;
+}
+
+
+/* =========================================================
+   CUSTOM SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-track{
+    background:#030305;
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(180,50,255,.7),
+            rgba(112,32,160,.45)
+        );
+
+    border-radius:20px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:var(--purple);
+}
+
+
+/* =========================================================
+   BACKGROUND LIGHT
+========================================================= */
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    width:600px;
+    height:600px;
+
+    left:50%;
+    top:15%;
+
+    transform:
+        translate(-50%,-50%);
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(180,50,255,.075),
+            transparent 67%
+        );
+
+    pointer-events:none;
+
+    z-index:-3;
+
+    animation:
+        ambientLight 10s ease-in-out infinite alternate;
+}
+
+@keyframes ambientLight{
+
+    from{
+        transform:
+            translate(-50%,-50%)
+            scale(.85);
+    }
+
+    to{
+        transform:
+            translate(-50%,-50%)
+            scale(1.15);
+    }
+}
+
+
+/* =========================================================
+   MOVING CODE LINES
+========================================================= */
+
+body::after{
+
+    content:"";
+
+    position:fixed;
+
+    inset:-50%;
+
+    pointer-events:none;
+
+    z-index:-2;
+
+    opacity:.035;
+
+    background:
+        repeating-linear-gradient(
+            125deg,
+            transparent 0px,
+            transparent 80px,
+            rgba(180,50,255,.9) 81px,
+            transparent 82px,
+            transparent 170px
+        );
+
+    animation:
+        codeLines 28s linear infinite;
+}
+
+@keyframes codeLines{
+
+    from{
+        transform:translate(-100px,-100px);
+    }
+
+    to{
+        transform:translate(100px,100px);
+    }
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app{
+
+    width:
+        min(1120px,100%);
+
+    min-height:100vh;
+
+    margin:auto;
+
+    padding:
+        25px
+        18px
+        70px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+
+    position:relative;
+
+    text-align:center;
+
+    padding:
+        20px
+        0
+        30px;
+}
+
+.logo{
+
+    display:inline-block;
+
+    position:relative;
+
+    color:var(--purple-light);
+
+    font-size:10px;
+
+    font-weight:700;
+
+    letter-spacing:7px;
+
+    text-transform:uppercase;
+
+    text-shadow:
+        0 0 20px
+        rgba(180,50,255,.55);
+
+    animation:
+        logoGlow 4s ease-in-out infinite;
+}
+
+@keyframes logoGlow{
+
+    0%,100%{
+        text-shadow:
+            0 0 12px
+            rgba(180,50,255,.3);
+    }
+
+    50%{
+        text-shadow:
+            0 0 28px
+            rgba(180,50,255,.7);
+    }
+}
+
+.logo::before,
+.logo::after{
+
+    content:"";
+
+    position:absolute;
+
+    top:50%;
+
+    width:35px;
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(180,50,255,.6)
+        );
+}
+
+.logo::before{
+    right:calc(100% + 12px);
+}
+
+.logo::after{
+
+    left:calc(100% + 12px);
+
+    transform:rotate(180deg);
+}
+
+.main-title{
+
+    margin-top:13px;
+
+    font-size:
+        clamp(30px,5vw,48px);
+
+    font-weight:900;
+
+    letter-spacing:-1px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #fff,
+            #ddd
+        );
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    color:transparent;
+
+    text-shadow:
+        0 15px 35px
+        rgba(0,0,0,.4);
+}
+
+.main-subtitle{
+
+    margin-top:10px;
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    letter-spacing:.3px;
+}
+
+
+/* =========================================================
+   CIPHER NAVIGATION
+========================================================= */
+
+.cipher-selector{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(105px,1fr));
+
+    gap:9px;
+
+    padding:7px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.055);
+
+    border-radius:19px;
+
+    background:
+        rgba(255,255,255,.018);
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.035),
+
+        0 20px 60px
+        rgba(0,0,0,.2);
+
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
+
+    margin-bottom:18px;
+}
+
+.cipher-button{
+
+    position:relative;
+
+    min-height:66px;
+
+    border:1px solid transparent;
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.035),
+            rgba(255,255,255,.012)
+        );
+
+    color:rgba(255,255,255,.48);
+
+    cursor:pointer;
+
+    font-family:inherit;
+
+    font-weight:700;
+
+    overflow:hidden;
+
+    transition:
+        transform .25s ease,
+        color .25s ease,
+        border-color .25s ease,
+        background .25s ease,
+        box-shadow .25s ease;
+}
+
+.cipher-button::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:10%;
+    right:10%;
+    bottom:-20px;
+
+    height:40px;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(180,50,255,.35),
+            transparent 70%
+        );
+
+    opacity:0;
+
+    transition:.3s;
+}
+
+.cipher-button:hover{
+
+    transform:
+        translateY(-2px);
+
+    color:#fff;
+
+    border-color:
+        rgba(180,50,255,.25);
+
+    background:
+        rgba(180,50,255,.055);
+}
+
+.cipher-button:hover::before{
+    opacity:1;
+}
+
+.cipher-button.active{
+
+    color:#fff;
+
+    border-color:
+        rgba(180,50,255,.48);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(180,50,255,.15),
+            rgba(180,50,255,.045)
+        );
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.08),
+
+        0 8px 30px
+        rgba(180,50,255,.09);
+}
+
+.cipher-button.active::before{
+    opacity:1;
+}
+
+.cipher-number{
+
+    display:block;
+
+    margin-bottom:5px;
+
+    color:
+        rgba(180,50,255,.85);
+
+    font-size:9px;
+
+    letter-spacing:2px;
+}
+
+
+/* =========================================================
+   INFO CARD
+========================================================= */
+
+.info-card{
+
+    position:relative;
+
+    padding:
+        22px
+        25px;
+
+    margin-bottom:18px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        var(--radius);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.045),
+            rgba(255,255,255,.018)
+        );
+
+    box-shadow:
+        var(--shadow);
+
+    backdrop-filter:
+        blur(20px);
+
+    -webkit-backdrop-filter:
+        blur(20px);
+
+    overflow:hidden;
+
+    text-align:center;
+}
+
+.info-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:250px;
+    height:250px;
+
+    top:-170px;
+    left:50%;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(180,50,255,.12),
+            transparent 70%
+        );
+
+    pointer-events:none;
+}
+
+.info-number{
+
+    position:relative;
+
+    color:
+        var(--purple-light);
+
+    font-size:9px;
+
+    letter-spacing:3px;
+
+    font-weight:700;
+}
+
+.info-title{
+
+    position:relative;
+
+    margin-top:7px;
+
+    font-size:23px;
+
+    font-weight:900;
+}
+
+.info-description{
+
+    position:relative;
+
+    margin-top:7px;
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    line-height:1.9;
+}
+
+
+/* =========================================================
+   PANELS
+========================================================= */
+
+.panel{
+
+    position:relative;
+
+    padding:21px;
+
+    margin-bottom:18px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        var(--radius);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.042),
+            rgba(255,255,255,.016)
+        );
+
+    box-shadow:
+        var(--shadow);
+
+    backdrop-filter:
+        blur(20px);
+
+    -webkit-backdrop-filter:
+        blur(20px);
+
+    overflow:hidden;
+}
+
+.panel::after{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:12%;
+    right:12%;
+
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(180,50,255,.35),
+            transparent
+        );
+
+    opacity:.5;
+}
+
+.hidden{
+    display:none !important;
+}
+
+
+/* =========================================================
+   MODE SWITCH
+========================================================= */
+
+.mode-bar{
+
+    display:flex;
+
+    gap:7px;
+
+    width:
+        min(100%,420px);
+
+    margin:
+        0 auto 20px;
+
+    padding:5px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.055);
+
+    border-radius:14px;
+
+    background:
+        rgba(0,0,0,.22);
+}
+
+.mode-button{
+
+    flex:1;
+
+    min-height:43px;
+
+    border:0;
+
+    border-radius:10px;
+
+    background:transparent;
+
+    color:var(--muted);
+
+    cursor:pointer;
+
+    font-family:inherit;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    transition:.25s;
+}
+
+.mode-button:hover{
+    color:#fff;
+}
+
+.mode-button.active{
+
+    color:#fff;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(180,50,255,.22),
+            rgba(180,50,255,.08)
+        );
+
+    box-shadow:
+        0 4px 18px
+        rgba(180,50,255,.1);
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.field-title{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:8px;
+
+    color:var(--muted);
+
+    font-size:11px;
+}
+
+textarea{
+
+    width:100%;
+
+    min-height:150px;
+
+    padding:17px;
+
+    resize:vertical;
+
+    outline:none;
+
+    border:
+        1px solid
+        rgba(255,255,255,.075);
+
+    border-radius:15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(0,0,0,.32),
+            rgba(255,255,255,.012)
+        );
+
+    color:#fff;
+
+    font-family:inherit;
+
+    font-size:15px;
+
+    line-height:1.9;
+
+    transition:
+        border-color .25s,
+        box-shadow .25s,
+        background .25s;
+}
+
+textarea::placeholder{
+    color:
+        rgba(255,255,255,.2);
+}
+
+textarea:hover{
+
+    border-color:
+        rgba(255,255,255,.12);
+}
+
+textarea:focus{
+
+    border-color:
+        rgba(180,50,255,.5);
+
+    background:
+        rgba(180,50,255,.025);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(180,50,255,.055),
+
+        0 15px 45px
+        rgba(0,0,0,.2);
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.actions{
+
+    display:flex;
+
+    gap:9px;
+
+    margin-top:11px;
+}
+
+.action-button{
+
+    position:relative;
+
+    flex:1;
+
+    min-height:49px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    border-radius:13px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.05),
+            rgba(255,255,255,.018)
+        );
+
+    color:rgba(255,255,255,.72);
+
+    cursor:pointer;
+
+    font-family:inherit;
+
+    font-weight:700;
+
+    overflow:hidden;
+
+    transition:
+        transform .2s,
+        border-color .2s,
+        color .2s,
+        box-shadow .2s,
+        background .2s;
+}
+
+.action-button::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    bottom:0;
+
+    width:35%;
+
+    left:-60%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.08),
+            transparent
+        );
+
+    transform:skewX(-20deg);
+
+    transition:.55s;
+}
+
+.action-button:hover{
+
+    transform:
+        translateY(-2px);
+
+    color:#fff;
+
+    border-color:
+        rgba(180,50,255,.35);
+
+    box-shadow:
+        0 10px 30px
+        rgba(0,0,0,.25);
+}
+
+.action-button:hover::before{
+    left:120%;
+}
+
+.action-button:active{
+    transform:
+        translateY(0)
+        scale(.98);
+}
+
+.action-button.primary{
+
+    color:#fff;
+
+    border-color:
+        rgba(180,50,255,.45);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(180,50,255,.22),
+            rgba(112,32,160,.08)
+        );
+
+    box-shadow:
+        0 8px 28px
+        rgba(180,50,255,.08);
+}
+
+
+/* =========================================================
+   OUTPUT
+========================================================= */
+
+.output-box{
+    margin-top:20px;
+}
+
+.output{
+
+    position:relative;
+
+    min-height:150px;
+
+    padding:17px;
+
+    border:
+        1px solid
+        rgba(180,50,255,.13);
+
+    border-radius:15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(180,50,255,.035),
+            rgba(0,0,0,.16)
+        );
+
+    color:
+        rgba(255,255,255,.9);
+
+    white-space:pre-wrap;
+
+    word-break:break-word;
+
+    line-height:1.9;
+
+    font-size:15px;
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.025);
+}
+
+
+/* =========================================================
+   FILE PANEL
+========================================================= */
+
+.file-title{
+
+    font-size:18px;
+
+    font-weight:900;
+
+    margin-bottom:8px;
+}
+
+.file-description{
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    line-height:2;
+}
+
+.file-example{
+
+    margin-top:15px;
+
+    padding:16px;
+
+    border:
+        1px solid
+        rgba(180,50,255,.12);
+
+    border-radius:13px;
+
+    background:
+        rgba(0,0,0,.25);
+
+    color:
+        var(--purple-light);
+
+    direction:ltr;
+
+    text-align:center;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    letter-spacing:1px;
+
+    box-shadow:
+        inset 0 0 20px
+        rgba(180,50,255,.025);
+}
+
+
+/* =========================================================
+   TABLES
+========================================================= */
+
+.table-title{
+
+    margin-bottom:16px;
+
+    text-align:center;
+
+    font-size:19px;
+
+    font-weight:900;
+}
+
+.table-scroll{
+
+    overflow-x:auto;
+
+    border-radius:13px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.055);
+}
+
+table{
+
+    width:100%;
+
+    min-width:450px;
+
+    border-collapse:collapse;
+}
+
+th,
+td{
+
+    padding:11px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.055);
+
+    text-align:center;
+}
+
+th{
+
+    color:
+        var(--purple-light);
+
+    background:
+        rgba(180,50,255,.065);
+
+    font-size:12px;
+}
+
+td{
+
+    color:
+        rgba(255,255,255,.67);
+
+    font-size:13px;
+
+    background:
+        rgba(255,255,255,.008);
+}
+
+tbody tr{
+    transition:.18s;
+}
+
+tbody tr:hover td{
+
+    background:
+        rgba(180,50,255,.045);
+
+    color:#fff;
+}
+
+
+/* =========================================================
+   CAESAR
+========================================================= */
+
+.caesar-panel{
+
+    padding:
+        21px 16px 24px;
+}
+
+.caesar-header{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    padding:
+        0 5px
+        15px;
+}
+
+.caesar-heading{
+
+    font-size:20px;
+
+    font-weight:900;
+}
+
+.caesar-live-key{
+
+    padding:
+        8px 14px;
+
+    border:
+        1px solid
+        rgba(180,50,255,.25);
+
+    border-radius:10px;
+
+    color:
+        var(--purple-light);
+
+    background:
+        rgba(180,50,255,.07);
+
+    font-size:11px;
+
+    letter-spacing:1px;
+
+    box-shadow:
+        0 0 20px
+        rgba(180,50,255,.05);
+}
+
+
+/* =========================================================
+   CAESAR WHEEL AREA
+========================================================= */
+
+.wheel-area{
+
+    position:relative;
+
+    width:
+        min(88vw,570px);
+
+    height:
+        min(88vw,570px);
+
+    margin:
+        5px auto 20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    touch-action:none;
+
+    isolation:isolate;
+}
+
+
+/* WHEEL AMBIENT GLOW */
+
+.wheel-area::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:70%;
+    height:70%;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(180,50,255,.09),
+            transparent 65%
+        );
+
+    filter:
+        blur(15px);
+
+    pointer-events:none;
+
+    z-index:-1;
+}
+
+
+/* POINTER */
+
+.pointer{
+
+    position:absolute;
+
+    top:-3px;
+
+    left:50%;
+
+    transform:
+        translateX(-50%);
+
+    z-index:100;
+
+    width:0;
+    height:0;
+
+    border-left:
+        12px solid transparent;
+
+    border-right:
+        12px solid transparent;
+
+    border-top:
+        27px solid
+        var(--purple);
+
+    filter:
+        drop-shadow(
+            0 0 5px
+            rgba(180,50,255,.8)
+        )
+
+        drop-shadow(
+            0 0 13px
+            rgba(180,50,255,.45)
+        );
+
+    pointer-events:none;
+}
+
+
+/* POINTER BASE */
+
+.pointer::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:38px;
+    height:4px;
+
+    left:-19px;
+    top:-28px;
+
+    border-radius:5px;
+
+    background:
+        var(--purple);
+
+    box-shadow:
+        0 0 12px
+        rgba(180,50,255,.7);
+}
+
+
+/* =========================================================
+   WHEELS
+========================================================= */
+
+.wheel{
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    border-radius:50%;
+
+    transform:
+        translate(-50%,-50%);
+
+    user-select:none;
+
+    -webkit-user-select:none;
+
+    touch-action:none;
+}
+
+
+/* OUTER */
+
+.outer-wheel{
+
+    width:490px;
+    height:490px;
+
+    z-index:5;
+
+    cursor:grab;
+
+    border:
+        1px solid
+        rgba(180,50,255,.35);
+
+    background:
+        radial-gradient(
+            circle,
+            transparent 53%,
+            rgba(180,50,255,.018) 54%,
+            rgba(180,50,255,.035) 68%,
+            transparent 69%
+        );
+
+    box-shadow:
+
+        0 0 0 1px
+        rgba(180,50,255,.04),
+
+        0 0 35px
+        rgba(180,50,255,.08),
+
+        0 0 90px
+        rgba(180,50,255,.035),
+
+        inset 0 0 50px
+        rgba(180,50,255,.045);
+}
+
+.outer-wheel:active{
+    cursor:grabbing;
+}
+
+
+/* OUTER RINGS */
+
+.outer-wheel::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:15px;
+
+    border:
+        1px solid
+        rgba(180,50,255,.13);
+
+    border-radius:50%;
+}
+
+.outer-wheel::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:42px;
+
+    border:
+        1px dashed
+        rgba(180,50,255,.10);
+
+    border-radius:50%;
+}
+
+
+/* INNER */
+
+.inner-wheel{
+
+    width:315px;
+    height:315px;
+
+    z-index:10;
+
+    border:
+        1px solid
+        rgba(255,255,255,.13);
+
+    background:
+        radial-gradient(
+            circle at 40% 35%,
+            rgba(255,255,255,.06),
+            rgba(255,255,255,.015) 55%,
+            rgba(0,0,0,.08)
+        );
+
+    box-shadow:
+
+        0 0 0 8px
+        rgba(0,0,0,.12),
+
+        0 0 35px
+        rgba(0,0,0,.7),
+
+        inset 0 0 45px
+        rgba(255,255,255,.025);
+}
+
+.inner-wheel::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:20px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.055);
+
+    border-radius:50%;
+}
+
+.inner-wheel::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:48px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.035);
+
+    border-radius:50%;
+}
+
+
+/* =========================================================
+   WHEEL LETTERS
+========================================================= */
+
+.wheel-letter{
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    width:43px;
+    height:43px;
+
+    margin-left:-21.5px;
+    margin-top:-21.5px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    pointer-events:none;
+
+    font-weight:700;
+}
+
+.inner-letter{
+
+    color:
+        rgba(255,255,255,.82);
+
+    font-size:17px;
+
+    text-shadow:
+        0 1px 8px
+        rgba(0,0,0,.6);
+}
+
+.outer-letter{
+
+    color:
+        rgba(220,170,255,.95);
+
+    font-size:16px;
+
+    text-shadow:
+        0 0 9px
+        rgba(180,50,255,.45);
+}
+
+
+/* =========================================================
+   CENTER
+========================================================= */
+
+.center-core{
+
+    position:absolute;
+
+    z-index:50;
+
+    width:108px;
+    height:108px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    background:
+        radial-gradient(
+            circle at 40% 35%,
+            #21182a,
+            #0b090d 65%,
+            #050507
+        );
+
+    border:
+        1px solid
+        rgba(180,50,255,.5);
+
+    box-shadow:
+
+        0 0 0 5px
+        rgba(180,50,255,.025),
+
+        0 0 25px
+        rgba(180,50,255,.2),
+
+        0 0 55px
+        rgba(180,50,255,.08),
+
+        inset 0 0 30px
+        rgba(180,50,255,.09);
+}
+
+.center-core::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:-8px;
+
+    border:
+        1px solid
+        rgba(180,50,255,.12);
+
+    border-radius:50%;
+}
+
+.center-small{
+
+    color:
+        rgba(255,255,255,.38);
+
+    font-size:8px;
+
+    letter-spacing:3px;
+
+    font-weight:700;
+}
+
+.center-number{
+
+    margin-top:4px;
+
+    color:
+        var(--purple-light);
+
+    font-size:30px;
+
+    line-height:1;
+
+    font-weight:900;
+
+    text-shadow:
+        0 0 20px
+        rgba(180,50,255,.65);
+}
+
+
+/* =========================================================
+   CAESAR CONTROLS
+========================================================= */
+
+.caesar-controls{
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    gap:9px;
+
+    flex-wrap:wrap;
+}
+
+.caesar-control{
+
+    width:49px;
+    height:49px;
+
+    border-radius:50%;
+
+    border:
+        1px solid
+        rgba(180,50,255,.28);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(180,50,255,.12),
+            rgba(180,50,255,.025)
+        );
+
+    color:#fff;
+
+    font-size:20px;
+
+    cursor:pointer;
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.06);
+
+    transition:.2s;
+}
+
+.caesar-control:hover{
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(180,50,255,.6);
+
+    background:
+        rgba(180,50,255,.17);
+
+    box-shadow:
+        0 8px 25px
+        rgba(180,50,255,.12);
+}
+
+.caesar-control:active{
+    transform:scale(.94);
+}
+
+.caesar-reset{
+
+    min-height:45px;
+
+    padding:
+        0 20px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.09);
+
+    border-radius:12px;
+
+    background:
+        rgba(255,255,255,.035);
+
+    color:
+        rgba(255,255,255,.7);
+
+    cursor:pointer;
+
+    font-family:inherit;
+
+    font-size:12px;
+
+    transition:.2s;
+}
+
+.caesar-reset:hover{
+
+    color:#fff;
+
+    border-color:
+        rgba(180,50,255,.35);
+
+    background:
+        rgba(180,50,255,.06);
+}
+
+
+/* =========================================================
+   CAESAR EXAMPLE
+========================================================= */
+
+.caesar-example{
+
+    margin-top:18px;
+
+    padding:
+        17px;
+
+    text-align:center;
+
+    border:
+        1px solid
+        rgba(180,50,255,.12);
+
+    border-radius:15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(180,50,255,.05),
+            rgba(0,0,0,.1)
+        );
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.025);
+}
+
+.caesar-example-title{
+
+    color:var(--muted);
+
+    font-size:10px;
+
+    margin-bottom:8px;
+}
+
+.caesar-example-value{
+
+    color:
+        var(--purple-light);
+
+    font-size:22px;
+
+    font-weight:900;
+
+    text-shadow:
+        0 0 20px
+        rgba(180,50,255,.25);
+}
+
+
+/* =========================================================
+   CAESAR MAPPING
+========================================================= */
+
+.mapping-wrapper{
+
+    margin-top:14px;
+
+    overflow-x:auto;
+
+    padding:
+        2px
+        2px
+        8px;
+}
+
+.mapping-row{
+
+    display:flex;
+
+    gap:5px;
+
+    width:max-content;
+
+    direction:ltr;
+}
+
+.mapping-item{
+
+    position:relative;
+
+    width:45px;
+
+    padding:
+        8px 3px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.06);
+
+    border-radius:9px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.035),
+            rgba(255,255,255,.01)
+        );
+
+    text-align:center;
+
+    transition:.2s;
+}
+
+.mapping-item:hover{
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(180,50,255,.35);
+
+    background:
+        rgba(180,50,255,.05);
+}
+
+.mapping-original{
+
+    color:
+        rgba(255,255,255,.45);
+
+    font-size:12px;
+}
+
+.mapping-arrow{
+
+    margin:2px 0;
+
+    color:
+        rgba(180,50,255,.75);
+
+    font-size:8px;
+}
+
+.mapping-result{
+
+    color:
+        var(--purple-light);
+
+    font-size:14px;
+
+    font-weight:700;
+}
+
+
+/* =========================================================
+   PATTERN LOCK
+========================================================= */
+
+.lock-screen{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:999999;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:
+
+        radial-gradient(
+            circle at center,
+            rgba(180,50,255,.13),
+            transparent 35%
+        ),
+
+        radial-gradient(
+            circle at 20% 80%,
+            rgba(100,30,140,.09),
+            transparent 25%
+        ),
+
+        #020204;
+
+    opacity:1;
+
+    visibility:visible;
+
+    transition:
+        opacity .8s ease,
+        visibility .8s ease;
+}
+
+.lock-screen.hide{
+
+    opacity:0;
+
+    visibility:hidden;
+
+    pointer-events:none;
+}
+
+.lock-box{
+
+    width:
+        min(92vw,390px);
+
+    text-align:center;
+
+    animation:
+        lockAppear .8s ease;
+}
+
+@keyframes lockAppear{
+
+    from{
+        opacity:0;
+        transform:
+            translateY(15px)
+            scale(.97);
+    }
+
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+.lock-logo{
+
+    color:
+        var(--purple-light);
+
+    font-size:10px;
+
+    font-weight:700;
+
+    letter-spacing:6px;
+
+    text-shadow:
+        0 0 20px
+        rgba(180,50,255,.55);
+}
+
+.lock-title{
+
+    margin-top:14px;
+
+    font-size:29px;
+
+    font-weight:900;
+}
+
+.lock-message{
+
+    margin-top:8px;
+
+    color:var(--muted);
+
+    font-size:12px;
+}
+
+.pattern-area{
+
+    position:relative;
+
+    width:290px;
+    height:290px;
+
+    margin:31px auto 26px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(180,50,255,.025),
+            transparent 62%
+        );
+}
+
+.pattern-area::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:20px;
+
+    border:
+        1px solid
+        rgba(180,50,255,.06);
+
+    border-radius:50%;
+
+    pointer-events:none;
+}
+
+.pattern-svg{
+
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    overflow:visible;
+
+    pointer-events:none;
+}
+
+.pattern-line{
+
+    fill:none;
+
+    stroke:
+        rgba(180,50,255,.9);
+
+    stroke-width:4.5;
+
+    stroke-linecap:round;
+
+    stroke-linejoin:round;
+
+    filter:
+        drop-shadow(
+            0 0 5px
+            rgba(180,50,255,.8)
+        )
+
+        drop-shadow(
+            0 0 12px
+            rgba(180,50,255,.35)
+        );
+}
+
+.pattern-dots{
+
+    position:absolute;
+
+    inset:0;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    grid-template-rows:
+        repeat(3,1fr);
+}
+
+.pattern-dot{
+
+    position:relative;
+
+    width:58px;
+    height:58px;
+
+    align-self:center;
+    justify-self:center;
+
+    border-radius:50%;
+
+    border:
+        1px solid
+        rgba(255,255,255,.13);
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            rgba(255,255,255,.06),
+            rgba(255,255,255,.01)
+        );
+
+    box-shadow:
+
+        0 8px 20px
+        rgba(0,0,0,.4),
+
+        inset 0 1px 0
+        rgba(255,255,255,.04);
+
+    cursor:pointer;
+
+    transition:
+        transform .15s,
+        border-color .15s,
+        box-shadow .15s,
+        background .15s;
+}
+
+.pattern-dot::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:9px;
+    height:9px;
+
+    left:50%;
+    top:50%;
+
+    transform:
+        translate(-50%,-50%);
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,.23);
+
+    transition:.15s;
+}
+
+.pattern-dot:hover{
+
+    transform:
+        scale(1.08);
+
+    border-color:
+        rgba(180,50,255,.4);
+}
+
+.pattern-dot.active{
+
+    border-color:
+        rgba(180,50,255,.8);
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(180,50,255,.2),
+            rgba(180,50,255,.04)
+        );
+
+    box-shadow:
+
+        0 0 0 5px
+        rgba(180,50,255,.035),
+
+        0 0 25px
+        rgba(180,50,255,.35),
+
+        inset 0 0 20px
+        rgba(180,50,255,.1);
+}
+
+.pattern-dot.active::after{
+
+    width:13px;
+    height:13px;
+
+    background:
+        var(--purple);
+
+    box-shadow:
+        0 0 12px
+        var(--purple);
+}
+
+.pattern-dot.wrong{
+
+    border-color:
+        rgba(255,73,101,.85);
+
+    background:
+        rgba(255,73,101,.09);
+
+    box-shadow:
+        0 0 22px
+        rgba(255,73,101,.18);
+}
+
+.pattern-dot.wrong::after{
+
+    background:
+        var(--danger);
+
+    box-shadow:
+        0 0 12px
+        rgba(255,73,101,.7);
+}
+
+.lock-status{
+
+    min-height:20px;
+
+    color:var(--muted);
+
+    font-size:11px;
+
+    transition:.2s;
+}
+
+.lock-status.error{
+    color:#ff6b80;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:800px){
+
+    .cipher-selector{
+
+        grid-template-columns:
+            repeat(3,1fr);
+
+    }
+
+    .outer-wheel{
+
+        width:420px;
+        height:420px;
+    }
+
+    .inner-wheel{
+
+        width:275px;
+        height:275px;
+    }
+}
+
+
+@media(max-width:600px){
+
+    .app{
+
+        padding:
+            15px
+            10px
+            50px;
+    }
+
+    .header{
+
+        padding-top:15px;
+    }
+
+    .logo::before,
+    .logo::after{
+        display:none;
+    }
+
+    .main-title{
+        font-size:28px;
+    }
+
+    .cipher-selector{
+
+        gap:6px;
+
+        padding:5px;
+
+        border-radius:15px;
+    }
+
+    .cipher-button{
+
+        min-height:57px;
+
+        border-radius:11px;
+
+        font-size:12px;
+    }
+
+    .panel{
+
+        padding:
+            16px 13px;
+    }
+
+    .info-card{
+
+        padding:
+            18px 15px;
+    }
+
+    .wheel-area{
+
+        width:94vw;
+        height:94vw;
+
+        max-width:430px;
+        max-height:430px;
+    }
+
+    .outer-wheel{
+
+        width:390px;
+        height:390px;
+    }
+
+    .inner-wheel{
+
+        width:255px;
+        height:255px;
+    }
+
+    .wheel-letter{
+
+        width:34px;
+        height:34px;
+
+        margin-left:-17px;
+        margin-top:-17px;
+    }
+
+    .inner-letter{
+        font-size:14px;
+    }
+
+    .outer-letter{
+        font-size:13px;
+    }
+
+    .center-core{
+
+        width:83px;
+        height:83px;
+    }
+
+    .center-number{
+        font-size:23px;
+    }
+
+    .actions{
+        flex-wrap:wrap;
+    }
+
+    .action-button{
+        min-width:100px;
+    }
+
+    .pattern-area{
+
+        width:270px;
+        height:270px;
+    }
+
+    .pattern-dot{
+
+        width:54px;
+        height:54px;
+    }
+}
+
+
+@media(max-width:400px){
+
+    .main-title{
+        font-size:25px;
+    }
+
+    .outer-wheel{
+
+        width:350px;
+        height:350px;
+    }
+
+    .inner-wheel{
+
+        width:225px;
+        height:225px;
+    }
+
+    .caesar-panel{
+        padding-left:7px;
+        padding-right:7px;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+
+        animation-duration:.01ms !important;
+
+        animation-iteration-count:1 !important;
+
+        scroll-behavior:auto !important;
+
+        transition-duration:.01ms !important;
+    }
+}
+
+
+
+/* =========================================================
+   CUSTOM CIPHER BUILDER
+========================================================= */
+.custom-builder {
+    margin: 0 0 18px;
+    padding: 22px;
+    border: 1px solid rgba(180,50,255,.22);
+    border-radius: var(--radius);
+    background: linear-gradient(145deg, rgba(180,50,255,.065), rgba(255,255,255,.018));
+    box-shadow: var(--shadow);
+}
+.custom-builder h2, .custom-builder h3 { font-weight: 900; }
+.custom-builder .custom-intro { color: var(--muted); font-size: 12px; line-height: 1.9; margin: 8px 0 18px; }
+.custom-fields { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 9px; margin-top: 14px; }
+.custom-field { display: grid; grid-template-columns: 38px minmax(0,1fr); align-items: center; gap: 8px; padding: 8px; border: 1px solid rgba(255,255,255,.065); border-radius: 11px; background: rgba(0,0,0,.18); }
+.custom-field label { color: var(--purple-light); text-align: center; font-weight: 800; }
+.custom-field input, .custom-text-input { width: 100%; min-width: 0; padding: 11px 12px; color: #fff; border: 1px solid rgba(255,255,255,.09); border-radius: 9px; outline: none; background: rgba(0,0,0,.28); font: inherit; }
+.custom-field input { text-align: center; font-size: 17px; }
+.custom-field input:focus, .custom-text-input:focus { border-color: rgba(180,50,255,.55); box-shadow: 0 0 0 3px rgba(180,50,255,.07); }
+.custom-form-row { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+.custom-label { display:block; color:var(--muted); font-size:12px; margin: 0 0 7px; }
+.custom-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.custom-action { flex:1; min-width:120px; min-height:43px; padding:9px 13px; border:1px solid rgba(180,50,255,.28); border-radius:11px; background:rgba(180,50,255,.075); color:#fff; cursor:pointer; font:inherit; font-size:12px; font-weight:700; transition:.2s; }
+.custom-action:hover { border-color:rgba(180,50,255,.65); background:rgba(180,50,255,.15); transform:translateY(-1px); }
+.custom-action.danger { border-color:rgba(255,73,101,.25); background:rgba(255,73,101,.06); }
+.custom-list { display:grid; gap:9px; margin-top:12px; }
+.custom-list-item { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px; border:1px solid rgba(255,255,255,.07); border-radius:12px; background:rgba(0,0,0,.17); }
+.custom-list-name { min-width:0; font-weight:800; overflow-wrap:anywhere; }
+.custom-list-desc { color:var(--muted); font-size:11px; margin-top:4px; line-height:1.6; }
+.custom-list-actions { display:flex; gap:6px; flex-wrap:wrap; }
+.custom-mini { border:1px solid rgba(180,50,255,.22); border-radius:8px; background:rgba(180,50,255,.06); color:#fff; padding:7px 9px; cursor:pointer; font:inherit; font-size:11px; }
+.custom-table-wrap { overflow-x:auto; margin-top:14px; border:1px solid rgba(255,255,255,.06); border-radius:12px; }
+.custom-table-wrap table { min-width:350px; }
+.custom-empty { color:var(--muted); font-size:12px; line-height:1.8; padding:12px 0; }
+ .cipher-button.custom-cipher-button { border-color:rgba(180,50,255,.22); }
+.otp-cipher-button{border-color:rgba(180,50,255,.38);background:linear-gradient(135deg,rgba(132,55,220,.12),rgba(25,12,40,.5))}
+.otp-panel{padding:18px;border:1px solid rgba(180,50,255,.25);border-radius:18px;background:linear-gradient(145deg,rgba(35,17,53,.88),rgba(10,8,17,.95));margin:0 0 18px;box-shadow:0 0 30px rgba(160,70,255,.08)}
+.otp-panel.hidden{display:none!important}.otp-panel h3{margin:0 0 8px;color:#e9d5ff}.otp-panel p{color:#b9adca;font-size:13px;line-height:1.8;margin:0 0 14px}
+.otp-key-input{width:100%;min-height:86px;resize:vertical;background:rgba(0,0,0,.35);border:1px solid rgba(180,50,255,.25);border-radius:12px;padding:12px;color:#f4eaff;font:600 15px/1.8 monospace;direction:ltr;text-align:left;outline:none}
+.otp-key-input:focus{border-color:#c084fc;box-shadow:0 0 0 3px rgba(168,85,247,.12)}
+.otp-actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.otp-actions button{flex:1;min-width:135px}
+.otp-status{font-size:12px;color:#c4b5fd;min-height:20px;margin-top:8px}
+.otp-hint{font-size:11px!important;color:#9385a8!important;margin-top:10px!important}
+@media(max-width:600px) {
+  .custom-builder { padding:16px 13px; }
+  .custom-form-row { grid-template-columns:1fr; }
+  .custom-fields { gap:7px; }
+  .custom-field { grid-template-columns:30px minmax(0,1fr); padding:6px; gap:5px; }
+  .custom-field input { padding:9px 5px; }
+  .custom-list-item { align-items:flex-start; flex-direction:column; }
+  .custom-list-actions { width:100%; }
+  .custom-mini { flex:1; }
+}
+
+
+
+/* =========================================================
+   FLOATING CUSTOM CIPHER LAB — PREMIUM DRAWER
+========================================================= */
+.custom-lab-backdrop{
+  position:fixed;inset:0;z-index:9997;background:rgba(4,2,12,.76);
+  backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);
+  opacity:0;visibility:hidden;transition:opacity .28s ease,visibility .28s ease;
+}
+.custom-lab-backdrop.open{opacity:1;visibility:visible}
+.custom-lab-fab{
+  position:fixed;right:24px;bottom:24px;z-index:9996;width:66px;height:66px;border:1px solid rgba(255,255,255,.34);
+  border-radius:50%;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1px;
+  background:radial-gradient(circle at 28% 20%,#f1c6ff 0,#c35cff 23%,#7c24d8 58%,#32105f 100%);
+  box-shadow:0 0 0 6px rgba(177,61,255,.09),0 0 28px rgba(183,61,255,.55),inset 0 1px 8px rgba(255,255,255,.35);
+  transition:transform .22s ease,box-shadow .22s ease;isolation:isolate;
+}
+.custom-lab-fab:before{content:"";position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(208,135,255,.55);animation:labPulse 2.5s ease-out infinite;z-index:-1}
+.custom-lab-fab:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 0 0 8px rgba(177,61,255,.13),0 0 38px rgba(183,61,255,.75),inset 0 1px 8px rgba(255,255,255,.4)}
+.custom-lab-fab .fab-plus{font-size:30px;font-weight:300;line-height:26px;text-shadow:0 0 12px #fff}
+.custom-lab-fab .fab-label{font-size:9px;font-weight:900;letter-spacing:.3px;white-space:nowrap}
+@keyframes labPulse{0%{transform:scale(.92);opacity:.85}100%{transform:scale(1.28);opacity:0}}
+.custom-builder#customCipherManager{
+  position:fixed!important;z-index:9998;left:50%;bottom:18px;transform:translate(-50%,calc(100% + 40px));
+  width:min(1000px,calc(100vw - 28px));max-height:min(88vh,900px);overflow-y:auto;overscroll-behavior:contain;
+  margin:0!important;padding:clamp(17px,3vw,30px)!important;border:1px solid rgba(199,119,255,.42)!important;
+  border-radius:24px!important;background:radial-gradient(ellipse at 12% 0%,rgba(166,66,255,.2),transparent 42%),linear-gradient(145deg,rgba(20,12,34,.99),rgba(8,7,17,.99))!important;
+  box-shadow:0 24px 90px rgba(0,0,0,.72),0 0 55px rgba(159,64,255,.19),inset 0 1px 0 rgba(255,255,255,.07)!important;
+  opacity:0;visibility:hidden;pointer-events:none;transition:transform .38s cubic-bezier(.2,.8,.2,1),opacity .28s ease,visibility .28s ease;
+}
+.custom-builder#customCipherManager.open{transform:translate(-50%,0);opacity:1;visibility:visible;pointer-events:auto}
+.custom-builder#customCipherManager .custom-lab-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}
+.custom-builder#customCipherManager .custom-lab-close{flex:0 0 42px;width:42px;height:42px;border-radius:13px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);color:#fff;font-size:23px;cursor:pointer;transition:.2s}
+.custom-builder#customCipherManager .custom-lab-close:hover{background:rgba(255,80,125,.16);border-color:rgba(255,80,125,.45);transform:rotate(90deg)}
+.custom-builder#customCipherManager .info-number{letter-spacing:2px;color:#d7a2ff;text-shadow:0 0 15px rgba(190,100,255,.45)}
+.custom-builder#customCipherManager h2{background:linear-gradient(90deg,#fff,#e5c0ff 55%,#b55dff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.custom-builder#customCipherManager .custom-form-row>div{min-width:0}
+.custom-builder#customCipherManager .custom-field{background:rgba(255,255,255,.035);border-color:rgba(199,119,255,.12);transition:border-color .2s,background .2s}
+.custom-builder#customCipherManager .custom-field:focus-within{border-color:rgba(190,105,255,.6);background:rgba(173,77,255,.07)}
+.custom-builder#customCipherManager .custom-field input,.custom-builder#customCipherManager .custom-text-input{background:rgba(2,2,9,.56);border-color:rgba(255,255,255,.1)}
+.custom-builder#customCipherManager .custom-action{border:1px solid rgba(194,112,255,.32);background:linear-gradient(135deg,rgba(154,58,235,.2),rgba(78,31,119,.2));color:#f4e5ff;transition:transform .2s,border-color .2s,background .2s;}
+.custom-builder#customCipherManager .custom-action:hover{transform:translateY(-2px);border-color:rgba(213,157,255,.7);background:linear-gradient(135deg,rgba(154,58,235,.38),rgba(78,31,119,.36))}
+.custom-builder#customCipherManager .custom-action#saveCustomCipher{background:linear-gradient(120deg,#b94aff,#7925d2);border-color:#d6a1ff;color:white;box-shadow:0 7px 22px rgba(153,56,229,.25)}
+.custom-builder#customCipherManager .custom-list-item{border-color:rgba(196,122,255,.16);background:rgba(255,255,255,.035)}
+.custom-lab-open{overflow:hidden}
+@media(max-width:600px){
+ .custom-lab-fab{width:58px;height:58px;right:15px;bottom:15px}.custom-lab-fab .fab-plus{font-size:27px}
+ .custom-builder#customCipherManager{bottom:7px;width:calc(100vw - 14px);max-height:91vh;border-radius:19px!important;padding:16px!important}
+ .custom-builder#customCipherManager .custom-form-row{grid-template-columns:1fr;gap:10px}
+ .custom-builder#customCipherManager .custom-fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+ .custom-builder#customCipherManager .custom-field{grid-template-columns:27px minmax(0,1fr);gap:5px;padding:6px}
+ .custom-builder#customCipherManager .custom-field input{padding:9px 5px}
+}
+@media(prefers-reduced-motion:reduce){.custom-lab-fab:before{animation:none}.custom-builder#customCipherManager,.custom-lab-backdrop{transition:none}}
+
+
+
+/* Keep numeric cipher output in logical left-to-right order even beside Arabic text */
+#outputText,.cipher-output,.otp-key-input,.otp-status code{direction:ltr;unicode-bidi:isolate;text-align:left;}
+
+/* =========================================================
+   CUSTOM LAB FAB — ROTATING PLUS + VERY SUBTLE MATRIX
+========================================================= */
+.custom-lab-fab{overflow:visible;transform:translateZ(0);transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .3s;}
+.custom-lab-fab .fab-plus{display:block;transform:rotate(0deg) scale(1);transition:transform .42s cubic-bezier(.2,.9,.2,1),text-shadow .25s;position:relative;z-index:2;}
+.custom-lab-fab:hover .fab-plus,.custom-lab-fab:focus-visible .fab-plus{transform:rotate(135deg) scale(1.12);text-shadow:0 0 5px #fff,0 0 18px #fff,0 0 28px #e8b6ff;}
+.custom-lab-fab:after{content:"0101 1100 0010 1011 0101 0110 1001 1101";position:absolute;z-index:-2;inset:-17px -24px;border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;white-space:normal;word-break:break-all;text-align:center;font:700 8px/1.35 monospace;letter-spacing:4px;color:rgba(111,255,179,.22);text-shadow:0 0 5px rgba(60,255,150,.16);opacity:0;filter:blur(.35px);transform:scale(.82);transition:opacity .24s,transform .35s;pointer-events:none;background:repeating-linear-gradient(180deg,transparent 0 8px,rgba(77,255,150,.045) 9px 10px);}
+.custom-lab-fab:hover:after,.custom-lab-fab:focus-visible:after{opacity:.48;transform:scale(1);}
+.custom-lab-fab:hover{transform:translateY(-4px) scale(1.055);border-color:rgba(255,255,255,.75)}
+.custom-lab-fab:focus-visible,.settings-fab:focus-visible{outline:2px solid #fff;outline-offset:5px}
+.custom-color-row{margin-top:14px;padding:13px;border:1px solid rgba(190,120,255,.16);border-radius:14px;background:rgba(255,255,255,.025)}
+.custom-color-control,.settings-color-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.custom-color-control input[type=color],.settings-color-row input[type=color]{width:43px;height:38px;padding:3px;border:1px solid rgba(255,255,255,.18);border-radius:10px;background:#0b0812;cursor:pointer}
+.custom-color-control span,.settings-color-row span{color:var(--muted);font-size:11px;flex:1;min-width:130px}
+.cipher-button.custom-cipher-button{border-color:color-mix(in srgb,var(--cipher-accent,#b432ff) 38%,transparent);background:linear-gradient(120deg,color-mix(in srgb,var(--cipher-accent,#b432ff) 12%,transparent),rgba(12,9,18,.62));}
+.cipher-button.custom-cipher-button .cipher-number{color:var(--cipher-accent,#b432ff);text-shadow:0 0 12px color-mix(in srgb,var(--cipher-accent,#b432ff) 45%,transparent)}
+.cipher-button.custom-cipher-button:hover,.cipher-button.custom-cipher-button.active{border-color:var(--cipher-accent,#b432ff);box-shadow:0 0 22px color-mix(in srgb,var(--cipher-accent,#b432ff) 18%,transparent);}
+.cipher-button.custom-cipher-button.active{background:linear-gradient(120deg,color-mix(in srgb,var(--cipher-accent,#b432ff) 20%,transparent),rgba(12,9,18,.8));}
+
+/* SETTINGS DRAWER */
+.settings-fab{position:fixed;left:22px;bottom:24px;z-index:9995;display:flex;align-items:center;gap:8px;padding:12px 15px;border:1px solid rgba(201,145,255,.25);border-radius:999px;color:#f7eaff;background:linear-gradient(135deg,rgba(24,15,39,.94),rgba(9,8,17,.96));box-shadow:0 8px 30px rgba(0,0,0,.38),0 0 20px rgba(177,61,255,.1);font:700 11px/1 Arial,Tahoma,sans-serif;cursor:pointer;backdrop-filter:blur(14px);transition:transform .25s,border-color .25s,box-shadow .25s}
+.settings-fab:hover{transform:translateY(-3px);border-color:rgba(220,170,255,.7);box-shadow:0 12px 34px rgba(0,0,0,.45),0 0 25px rgba(177,61,255,.2)}
+.settings-gear{display:inline-block;font-size:19px;line-height:1;transition:transform .6s cubic-bezier(.2,.8,.2,1);color:#e4c3ff;text-shadow:0 0 12px var(--purple)}
+.settings-fab:hover .settings-gear{transform:rotate(90deg)}
+.settings-backdrop{position:fixed;inset:0;z-index:10000;background:rgba(3,2,9,.7);backdrop-filter:blur(8px);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.settings-backdrop.open{opacity:1;visibility:visible}
+.settings-panel{position:fixed;z-index:10001;left:16px;bottom:16px;width:min(440px,calc(100vw - 24px));max-height:min(84vh,760px);overflow:auto;padding:23px;border:1px solid rgba(190,128,255,.28);border-radius:23px;background:radial-gradient(ellipse at 0 0,rgba(156,77,255,.16),transparent 45%),linear-gradient(145deg,rgba(19,13,30,.99),rgba(7,7,13,.99));box-shadow:0 24px 90px rgba(0,0,0,.72),0 0 45px rgba(155,77,255,.14);transform:translateY(18px) scale(.98);opacity:0;visibility:hidden;pointer-events:none;transition:transform .28s,opacity .24s,visibility .24s}
+.settings-panel.open{transform:translateY(0) scale(1);opacity:1;visibility:visible;pointer-events:auto}
+.settings-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:20px}.settings-kicker{font:700 9px/1.4 monospace;letter-spacing:1.7px;color:#c99aff}.settings-heading h2{font-size:23px;margin:7px 0;background:linear-gradient(90deg,#fff,#d8b0ff);color:transparent;background-clip:text;-webkit-background-clip:text}.settings-heading p{font-size:12px;color:var(--muted);line-height:1.7}.settings-close{flex:0 0 38px;width:38px;height:38px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#fff;font-size:24px;cursor:pointer}.settings-group{padding:15px 0;border-top:1px solid rgba(255,255,255,.075)}.settings-group-title{font-size:12px;font-weight:900;color:#e6ceff;margin-bottom:12px}.setting-row{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:10px 0;cursor:pointer}.setting-row span:first-child{display:flex;flex-direction:column;gap:5px}.setting-row strong{font-size:12px;color:#f7f2ff}.setting-row small{font-size:10px;line-height:1.6;color:var(--muted)}.setting-row input[type=checkbox]{appearance:none;-webkit-appearance:none;flex:0 0 42px;width:42px;height:24px;border-radius:99px;background:#302a3b;border:1px solid rgba(255,255,255,.12);position:relative;cursor:pointer;transition:background .2s}.setting-row input[type=checkbox]:before{content:"";position:absolute;width:16px;height:16px;top:3px;right:3px;border-radius:50%;background:#ddd;transition:transform .2s,background .2s}.setting-row input[type=checkbox]:checked{background:var(--purple);box-shadow:0 0 15px color-mix(in srgb,var(--purple) 40%,transparent)}.setting-row input[type=checkbox]:checked:before{transform:translateX(-18px);background:#fff}.settings-label{display:block;font-size:11px;color:#e9ddf8;margin-bottom:9px}.settings-saved{font-size:11px;color:#a7f3d0!important}.settings-test-button{width:100%;padding:11px;border:1px solid rgba(190,128,255,.25);border-radius:12px;background:rgba(160,70,255,.09);color:#f5eaff;font:700 12px Arial,Tahoma,sans-serif;cursor:pointer;transition:background .2s,border-color .2s}.settings-test-button:hover{background:rgba(160,70,255,.18);border-color:rgba(190,128,255,.6)}.settings-footer{text-align:center;color:rgba(220,190,255,.4);font:9px monospace;letter-spacing:1.5px;padding-top:8px}.settings-footer span{color:#b56aff;margin:0 5px}
+body.effects-off *,body.effects-off *:before,body.effects-off *:after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}
+body.matrix-off .custom-lab-fab:after{display:none!important}
+@media(max-width:600px){.custom-lab-fab{right:15px;bottom:15px;width:60px;height:60px}.settings-fab{left:15px;bottom:15px;padding:11px 12px}.settings-panel{left:12px;bottom:12px;padding:18px;max-height:86vh}.custom-lab-backdrop{backdrop-filter:blur(6px)}}
+@media(prefers-reduced-motion:reduce){.custom-lab-fab,.settings-fab,.settings-panel,.settings-backdrop{transition:none!important}}
+
+
+/* CUSTOM CIPHER ACTIVE COLOR — the chosen color replaces purple in the working area */
+body.custom-cipher-active .info-card{
+  border-color:color-mix(in srgb,var(--active-cipher-accent,#b432ff) 48%,rgba(255,255,255,.08));
+  box-shadow:var(--shadow),0 0 0 1px color-mix(in srgb,var(--active-cipher-accent,#b432ff) 10%,transparent),0 0 34px color-mix(in srgb,var(--active-cipher-accent,#b432ff) 12%,transparent);
+}
+body.custom-cipher-active .info-card::before{
+  background:radial-gradient(circle,color-mix(in srgb,var(--active-cipher-accent,#b432ff) 24%,transparent),transparent 72%);
+}
+body.custom-cipher-active #infoNumber,
+body.custom-cipher-active #infoTitle{
+  color:var(--active-cipher-accent,#b432ff);
+  text-shadow:0 0 16px color-mix(in srgb,var(--active-cipher-accent,#b432ff) 30%,transparent);
+}
+body.custom-cipher-active textarea:focus,
+body.custom-cipher-active textarea:hover{
+  border-color:color-mix(in srgb,var(--active-cipher-accent,#b432ff) 68%,transparent);
+  background:color-mix(in srgb,var(--active-cipher-accent,#b432ff) 5%,rgba(5,4,12,.96));
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--active-cipher-accent,#b432ff) 13%,transparent),0 0 25px color-mix(in srgb,var(--active-cipher-accent,#b432ff) 9%,transparent);
+}
+body.custom-cipher-active .action-button.primary{
+  border-color:color-mix(in srgb,var(--active-cipher-accent,#b432ff) 72%,white 8%);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--active-cipher-accent,#b432ff) 35%,transparent),color-mix(in srgb,var(--active-cipher-accent,#b432ff) 9%,rgba(10,7,18,.96)));
+  box-shadow:0 8px 28px color-mix(in srgb,var(--active-cipher-accent,#b432ff) 18%,transparent),inset 0 1px 0 rgba(255,255,255,.1);
+}
+body.custom-cipher-active .action-button:hover{border-color:color-mix(in srgb,var(--active-cipher-accent,#b432ff) 60%,transparent)}
+body.custom-cipher-active #customCipherTableContainer{border-color:color-mix(in srgb,var(--active-cipher-accent,#b432ff) 38%,transparent)}
+body.custom-cipher-active #customCipherTableContainer th{background:color-mix(in srgb,var(--active-cipher-accent,#b432ff) 13%,rgba(8,6,15,.95))}
+body.custom-cipher-active #customCipherTableContainer td{border-color:color-mix(in srgb,var(--active-cipher-accent,#b432ff) 15%,transparent)}
+
+/* Premium floating "My Cipher" launcher */
+.custom-lab-fab{
+  isolation:isolate;
+  border:1px solid rgba(225,185,255,.62)!important;
+  background:radial-gradient(circle at 30% 18%,rgba(255,255,255,.22),transparent 34%),linear-gradient(145deg,#341451 0%,#170b28 52%,#080610 100%)!important;
+  box-shadow:0 10px 28px rgba(0,0,0,.5),0 0 0 1px rgba(177,61,255,.24),0 0 24px rgba(177,61,255,.28),inset 0 1px 0 rgba(255,255,255,.22)!important;
+}
+.custom-lab-fab:before{inset:-6px!important;border-color:rgba(214,160,255,.62)!important;box-shadow:0 0 18px rgba(177,61,255,.2)}
+.custom-lab-fab:after{content:"01 10 01 11 00 10 11 01 10 00 01 11"!important;inset:-20px -26px!important;color:rgba(143,255,190,.16)!important;background:repeating-linear-gradient(180deg,transparent 0 5px,rgba(105,255,170,.055) 6px 7px)!important;filter:blur(.25px)!important}
+.custom-lab-fab .fab-plus{font-size:32px!important;font-weight:300!important;transition:transform .48s cubic-bezier(.18,.9,.2,1),text-shadow .25s!important}
+.custom-lab-fab .fab-label{position:relative;z-index:2;text-shadow:0 0 10px rgba(225,190,255,.55);letter-spacing:.8px!important}
+.custom-lab-fab:hover,.custom-lab-fab:focus-visible{transform:translateY(-5px) scale(1.07)!important;border-color:#fff!important;box-shadow:0 15px 38px rgba(0,0,0,.58),0 0 0 7px rgba(177,61,255,.09),0 0 42px rgba(177,61,255,.62),inset 0 1px 0 rgba(255,255,255,.45)!important}
+.custom-lab-fab:hover:before,.custom-lab-fab:focus-visible:before{animation-duration:1.15s;border-color:rgba(244,220,255,.9)!important}
+.custom-lab-fab:hover:after,.custom-lab-fab:focus-visible:after{opacity:.72!important;transform:scale(1.08)!important}
+.custom-lab-fab:hover .fab-plus,.custom-lab-fab:focus-visible .fab-plus{transform:rotate(135deg) scale(1.18)!important}
+.custom-builder#customCipherManager{border-color:rgba(202,143,255,.38)!important;box-shadow:0 30px 110px rgba(0,0,0,.8),0 0 0 1px rgba(177,61,255,.12),0 0 60px rgba(143,55,220,.2)!important}
+.custom-builder#customCipherManager .custom-lab-heading{padding-bottom:14px;border-bottom:1px solid rgba(190,120,255,.13)}
+.custom-builder#customCipherManager .custom-color-row{background:linear-gradient(135deg,rgba(177,61,255,.08),rgba(255,255,255,.015));box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+@media(prefers-reduced-motion:reduce){.custom-lab-fab:after{transition:none!important}}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =======================================================
+     PATTERN LOCK
+======================================================= -->
+
+<div
+class="lock-screen"
+id="lockScreen"
+>
+
+    <div class="lock-box">
+
+        <div class="lock-logo">
+            SECRET CIPHER
+        </div>
+
+        <div class="lock-title">
+            الرمز الخاص
+        </div>
+
+        <div class="lock-message">
+            ارسم النمط لفتح البرنامج
+        </div>
+
+
+        <div
+        class="pattern-area"
+        id="patternArea"
+        >
+
+            <svg
+            class="pattern-svg"
+            id="patternSvg"
+            >
+
+                <polyline
+                class="pattern-line"
+                id="patternLine"
+                points=""
+                />
+
+            </svg>
+
+
+            <div
+            class="pattern-dots"
+            >
+
+                <div
+                class="pattern-dot"
+                data-index="1"
+                ></div>
+
+                <div
+                class="pattern-dot"
+                data-index="2"
+                ></div>
+
+                <div
+                class="pattern-dot"
+                data-index="3"
+                ></div>
+
+                <div
+                class="pattern-dot"
+                data-index="4"
+                ></div>
+
+                <div
+                class="pattern-dot"
+                data-index="5"
+                ></div>
+
+                <div
+                class="pattern-dot"
+                data-index="6"
+                ></div>
+
+                <div
+                class="pattern-dot"
+                data-index="7"
+                ></div>
+
+                <div
+                class="pattern-dot"
+                data-index="8"
+                ></div>
+
+                <div
+                class="pattern-dot"
+                data-index="9"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <div
+        class="lock-status"
+        id="lockStatus"
+        >
+            ارسم النمط
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =======================================================
+     MAIN APP
+======================================================= -->
+
+<main class="app">
+
+
+<header class="header">
+
+    <div class="logo">
+        CIPHER SYSTEM
+    </div>
+
+    <h1 class="main-title">
+        برنامج الشفرات
+    </h1>
+
+    <div class="main-subtitle">
+        مجموعة أدوات تشفير وفك تشفير
+    </div>
+
+</header>
+
+
+
+<!-- =======================================================
+     CIPHER SELECTOR
+======================================================= -->
+
+<div
+class="cipher-selector"
+>
+
+    <button
+    class="cipher-button active"
+    data-cipher="file"
+    >
+
+        <span class="cipher-number">
+            01
+        </span>
+
+        FILE
+
+    </button>
+
+
+    <button
+    class="cipher-button"
+    data-cipher="alt"
+    >
+
+        <span class="cipher-number">
+            02
+        </span>
+
+        ALT
+
+    </button>
+
+
+    <button
+    class="cipher-button"
+    data-cipher="numbers"
+    >
+
+        <span class="cipher-number">
+            03
+        </span>
+
+        أرقام
+
+    </button>
+
+
+    <button
+    class="cipher-button"
+    data-cipher="atbash"
+    >
+
+        <span class="cipher-number">
+            04
+        </span>
+
+        ATBASH
+
+    </button>
+
+
+    <button
+    class="cipher-button"
+    data-cipher="caesar"
+    >
+
+        <span class="cipher-number">
+            05
+        </span>
+
+        CAESAR
+
+    </button>
+
+
+    <button
+    class="cipher-button"
+    data-cipher="morse"
+    >
+
+        <span class="cipher-number">
+            06
+        </span>
+
+        MORSE
+
+    </button>
+
+    <button
+    class="cipher-button otp-cipher-button"
+    data-cipher="otp"
+    >
+        <span class="cipher-number">07</span>
+        ONE-TIME PAD
+    </button>
+
+</div>
+
+<!-- =======================================================
+     CUSTOM CIPHER BUILDER
+======================================================= -->
+<div class="custom-lab-backdrop" id="customLabBackdrop" aria-hidden="true"></div>
+<button class="custom-lab-fab" id="openCustomLab" type="button" aria-label="إنشاء شفرة جديدة" title="أنشئ شفرتك الخاصة">
+  <span class="fab-plus">＋</span><span class="fab-label">شفرتي</span>
+</button>
+<section class="custom-builder" id="customCipherManager" role="dialog" aria-modal="true" aria-labelledby="customLabTitle">
+  <div class="custom-lab-heading"><div><div class="info-number">CUSTOM CIPHER LAB / 08+</div>
+  <h2 id="customLabTitle" style="margin-top:7px;font-size:25px">اصنع شفرتك الخاصة</h2></div>
+  <button class="custom-lab-close" id="closeCustomLab" type="button" aria-label="إغلاق نافذة صناعة الشفرات">×</button></div>
+  <p class="custom-intro">أنشئ شفرة جديدة باسمك، وحدد رمزًا مختلفًا لكل حرف عربي. تُحفظ الشفرات على هذا الجهاز وتظهر في الأعلى كالشفرات رقم 08 و09 و10... يمكنك تعديلها أو حذفها في أي وقت.</p>
+
+  <div class="custom-form-row">
+    <div>
+      <label class="custom-label" for="customCipherName">اسم الشفرة</label>
+      <input class="custom-text-input" id="customCipherName" maxlength="35" placeholder="مثال: شفرة الظلال">
+    </div>
+    <div>
+      <label class="custom-label" for="customCipherDescription">وصف الشفرة (اختياري)</label>
+      <input class="custom-text-input" id="customCipherDescription" maxlength="100" placeholder="وصف قصير لطريقة الشفرة">
+    </div>
+  </div>
+  <div class="custom-color-row">
+    <label class="custom-label" for="customCipherColor">لون الشفرة الجديدة</label>
+    <div class="custom-color-control"><input type="color" id="customCipherColor" value="#b432ff" aria-label="اختر لون الشفرة"><span>اختر لونًا يميز شفرتك في القائمة والأزرار</span><button type="button" id="randomCipherColor" class="custom-mini">لون عشوائي</button></div>
+  </div>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:20px">
+    <h3 style="font-size:16px">جدول الرموز</h3>
+    <span style="font-size:10px;color:var(--purple-light);letter-spacing:1px">28 ARABIC LETTERS</span>
+  </div>
+  <p class="custom-intro" style="margin:6px 0 0">اكتب رمزًا واحدًا مختلفًا لكل حرف. لا تكرر الرمز نفسه، ولا تستخدم علامة التطويل «ـ» لأنها تفصل بين الكلمات عند التشفير.</p>
+  <div class="custom-actions" style="margin-top:10px">
+    <button type="button" class="custom-action" id="fillCustomDefaults">استخدام رموز افتراضية</button>
+    <button type="button" class="custom-action" id="clearCustomSymbols">مسح الرموز</button>
+  </div>
+  <div class="custom-fields" id="customSymbolsGrid"></div>
+
+  <div class="custom-actions">
+    <button type="button" class="custom-action" id="saveCustomCipher">حفظ الشفرة</button>
+    <button type="button" class="custom-action" id="newCustomCipher">شفرة جديدة</button>
+    <button type="button" class="custom-action danger" id="deleteCustomCipher" style="display:none">حذف الشفرة الحالية</button>
+  </div>
+  <div id="customCipherMessage" class="custom-empty" role="status" aria-live="polite">ابدأ بكتابة اسم الشفرة وتحديد رموزها، ثم اضغط «حفظ الشفرة».</div>
+
+  <div style="margin-top:25px;padding-top:18px;border-top:1px solid rgba(255,255,255,.07)">
+    <h3 style="font-size:16px">الشفرات التي أنشأتها</h3>
+    <div id="customCipherList" class="custom-list"></div>
+  </div>
+  <div style="margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.07)">
+    <h3 style="font-size:16px">جدول الشفرة المحددة</h3>
+    <div id="customCipherTableContainer" class="custom-table-wrap"></div>
+  </div>
+</section>
+
+<!-- SETTINGS BUTTON + PANEL -->
+<button class="settings-fab" id="openSettings" type="button" aria-label="الإعدادات" title="إعدادات البرنامج"><span class="settings-gear">⚙</span><span>الإعدادات</span></button>
+<div class="settings-backdrop" id="settingsBackdrop" aria-hidden="true"></div>
+<section class="settings-panel" id="settingsPanel" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" aria-hidden="true">
+  <div class="settings-heading"><div><div class="settings-kicker">SYSTEM PREFERENCES / 08</div><h2 id="settingsTitle">إعدادات التجربة</h2><p>خصص مظهر البرنامج والصوت والحركة كما تحب.</p></div><button id="closeSettings" type="button" class="settings-close" aria-label="إغلاق الإعدادات">×</button></div>
+  <div class="settings-group"><div class="settings-group-title">الصوت والمؤثرات</div>
+    <label class="setting-row"><span><strong>أصوات التفاعل</strong><small>نقرات إلكترونية خفيفة عند الضغط على الأزرار</small></span><input id="settingSound" type="checkbox" checked></label>
+    <label class="setting-row"><span><strong>تأثير المصفوفة</strong><small>أرقام وحروف خافتة خلف زر «شفرتي»</small></span><input id="settingMatrix" type="checkbox" checked></label>
+    <label class="setting-row"><span><strong>الحركة والوهج</strong><small>توهج الأزرار والانتقالات المتحركة</small></span><input id="settingMotion" type="checkbox" checked></label>
+  </div>
+  <div class="settings-group"><div class="settings-group-title">ألوان الواجهة</div><label class="settings-label" for="settingAccent">اللون الرئيسي للبرنامج</label><div class="settings-color-row"><input id="settingAccent" type="color" value="#b432ff"><span>يغير لون الوهج العام للأدوات</span><button id="resetAccent" type="button" class="custom-mini">إعادة الضبط</button></div></div>
+  <div class="settings-group"><div class="settings-group-title">إعدادات إضافية</div>
+    <label class="setting-row"><span><strong>حفظ تفضيلاتي</strong><small>تظل الإعدادات محفوظة على هذا المتصفح</small></span><span class="settings-saved" id="settingsSaved">تلقائي</span></label>
+    <button class="settings-test-button" id="testSound" type="button">▶ تجربة الصوت</button>
+  </div>
+  <div class="settings-footer">CIPHER SYSTEM <span>•</span> LOCAL SETTINGS</div>
+</section>
+
+<!-- =======================================================
+     INFO
+======================================================= -->
+
+<section class="info-card">
+
+    <div
+    class="info-number"
+    id="infoNumber"
+    >
+        CIPHER 01
+    </div>
+
+    <div
+    class="info-title"
+    id="infoTitle"
+    >
+        FILE
+    </div>
+
+    <div
+    class="info-description"
+    id="infoDescription"
+    >
+        شفرة تعتمد على إحداثيات الصفحة.
+    </div>
+
+</section>
+
+
+
+<!-- ONE-TIME PAD PANEL -->
+<section class="otp-panel hidden" id="otpPanel">
+  <h3>ONE-TIME PAD / المفتاح الرقمي لمرة واحدة</h3>
+  <p>حوّل الحروف إلى أرقام من خانتين، ثم اجمع كل خانة مع خانة المفتاح دون ترحيل. المفتاح يجب أن يكون عشوائيًا، مساويًا لطول الأرقام، ولا يُستخدم إلا مرة واحدة.</p>
+  <label for="otpKeyInput" style="display:block;margin-bottom:7px;color:#e9d5ff;font-size:13px;font-weight:700">مفتاح الأرقام</label>
+  <textarea id="otpKeyInput" class="otp-key-input" placeholder="مثال: 5225 1637 5297 1135"></textarea>
+  <div class="otp-actions">
+    <button class="action-button primary" id="otpGenerateKey" type="button">توليد مفتاح عشوائي</button>
+    <button class="action-button" id="otpCopyKey" type="button">نسخ المفتاح</button>
+  </div>
+  <div class="otp-status" id="otpStatus" role="status" aria-live="polite">اكتب الرسالة أولًا، ثم ولّد مفتاحًا بطولها الرقمي.</div>
+  <p class="otp-hint">تنبيه: التطبيق لا يرسل المفتاح لأي جهة. أرسله للمستقبل عبر قناة منفصلة وآمنة، ثم أتلفه بعد الاستخدام. المسافات بين الكلمات لا تُشفّر في هذا الإصدار.</p>
+</section>
+
+<!-- =======================================================
+     CAESAR PANEL
+======================================================= -->
+
+<section
+class="panel caesar-panel hidden"
+id="caesarPanel"
+>
+
+    <div class="caesar-header">
+
+        <div class="caesar-heading">
+            عجلة Caesar
+        </div>
+
+        <div
+        class="caesar-live-key"
+        id="caesarLiveKey"
+        >
+            KEY 0
+        </div>
+
+    </div>
+
+
+    <div class="wheel-area">
+
+        <div class="pointer"></div>
+
+
+        <div
+        class="wheel outer-wheel"
+        id="outerWheel"
+        ></div>
+
+
+        <div
+        class="wheel inner-wheel"
+        id="innerWheel"
+        ></div>
+
+
+        <div class="center-core">
+
+            <div class="center-small">
+                KEY
+            </div>
+
+            <div
+            class="center-number"
+            id="centerNumber"
+            >
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="caesar-controls">
+
+        <button
+        class="caesar-control"
+        id="caesarRight"
+        >
+            →
+        </button>
+
+        <button
+        class="caesar-reset"
+        id="caesarReset"
+        >
+            إعادة المفتاح إلى 0
+        </button>
+
+        <button
+        class="caesar-control"
+        id="caesarLeft"
+        >
+            ←
+        </button>
+
+    </div>
+
+
+    <div class="caesar-example">
+
+        <div class="caesar-example-title">
+            الحرف الموجود أمام المؤشر
+        </div>
+
+        <div
+        class="caesar-example-value"
+        id="caesarExample"
+        >
+            أ ← أ
+        </div>
+
+    </div>
+
+
+    <div
+    class="mapping-wrapper"
+    id="mappingWrapper"
+    ></div>
+
+</section>
+
+
+
+<!-- =======================================================
+     FILE PANEL
+======================================================= -->
+
+<section
+class="panel"
+id="filePanel"
+>
+
+    <div class="file-title">
+        نظام FILE
+    </div>
+
+    <div class="file-description">
+
+        كل ملف يمثل إحداثيات داخل الصفحة:
+
+        <br>
+
+        <strong>
+            السطر ← الكلمة ← الحرف
+        </strong>
+
+        <br><br>
+
+        مثال:
+
+    </div>
+
+    <div class="file-example">
+        FILE 06-04-03
+    </div>
+
+</section>
+
+
+
+<!-- =======================================================
+     ALT TABLE
+======================================================= -->
+
+<section
+class="panel hidden"
+id="altPanel"
+>
+
+    <div class="table-title">
+        جدول شفرة ALT
+    </div>
+
+    <div class="table-scroll">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        رقم
+                    </th>
+
+                    <th>
+                        الرمز
+                    </th>
+
+                    <th>
+                        ALT
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody
+            id="altTableBody"
+            ></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+
+<!-- =======================================================
+     NUMBER TABLE
+======================================================= -->
+
+<section
+class="panel hidden"
+id="numberPanel"
+>
+
+    <div class="table-title">
+        جدول الحروف والأرقام
+    </div>
+
+    <div class="table-scroll">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        الحرف
+                    </th>
+
+                    <th>
+                        الرقم
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody
+            id="numberTableBody"
+            ></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+
+<!-- =======================================================
+     WORK AREA
+======================================================= -->
+
+<section class="panel">
+
+
+    <div class="mode-bar">
+
+        <button
+        class="mode-button active"
+        id="encodeMode"
+        >
+            تشفير
+        </button>
+
+        <button
+        class="mode-button"
+        id="decodeMode"
+        >
+            فك الشفرة
+        </button>
+
+    </div>
+
+
+    <div class="field-title">
+
+        <span>
+            النص المدخل
+        </span>
+
+        <span id="inputCount">
+            0
+        </span>
+
+    </div>
+
+
+    <textarea
+    id="inputText"
+    placeholder="اكتب النص هنا..."
+    ></textarea>
+
+
+    <div class="actions">
+
+        <button
+        class="action-button primary"
+        id="runButton"
+        >
+            تنفيذ
+        </button>
+
+        <button
+        class="action-button"
+        id="clearButton"
+        >
+            مسح
+        </button>
+
+    </div>
+
+
+    <div class="output-box">
+
+        <div class="field-title">
+
+            <span>
+                الناتج
+            </span>
+
+            <span id="outputCount">
+                0
+            </span>
+
+        </div>
+
+
+        <div
+        class="output"
+        id="outputText"
+        ></div>
+
+
+        <div class="actions">
+
+            <button
+            class="action-button"
+            id="copyButton"
+            >
+                نسخ الناتج
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+
+<script>
+
+/* =========================================================
+   ALPHABET
+========================================================= */
+
+const arabicAlphabet=[
+
+"ا","ب","ت","ث","ج","ح","خ",
+"د","ذ","ر","ز","س","ش","ص",
+"ض","ط","ظ","ع","غ","ف","ق",
+"ك","ل","م","ن","ه","و","ي"
+
+];
+
+
+/* =========================================================
+   ALT
+========================================================= */
+
+const altSymbols=[
+
+"☺","☻","♥","♦","♣","♠","•",
+"◘","○","◙","♂","♀","♪","♫",
+"☼","►","◄","↕","‼","¶","§",
+"▬","↨","↑","↓","→","←","∟"
+
+];
+
+
+/* =========================================================
+   CIPHER INFO
+========================================================= */
+
+const cipherInfo={
+
+file:{
+number:"CIPHER 01",
+title:"FILE",
+description:
+"شفرة تعتمد على إحداثيات الصفحة: السطر ثم الكلمة ثم الحرف."
+},
+
+alt:{
+number:"CIPHER 02",
+title:"ALT",
+description:
+"تحويل الحروف إلى رموز باستخدام جدول ALT."
+},
+
+numbers:{
+number:"CIPHER 03",
+title:"الحروف إلى أرقام",
+description:
+"كل حرف عربي يقابله رقم من 1 إلى 28."
+},
+
+atbash:{
+number:"CIPHER 04",
+title:"ATBASH",
+description:
+"استبدال كل حرف بالحرف المقابل له من الطرف الآخر."
+},
+
+caesar:{
+number:"CIPHER 05",
+title:"CAESAR",
+description:
+"إزاحة الحروف بعدد خطوات يحدده مفتاح العجلة."
+},
+
+morse:{
+number:"CIPHER 06",
+title:"MORSE",
+description:
+"تحويل الحروف إلى إشارات Morse والعكس."
+},
+
+otp:{
+number:"CIPHER 07",
+title:"ONE-TIME PAD",
+description:
+"شفرة رقمية تجمع كل خانة من الرسالة مع خانة عشوائية مقابلة دون ترحيل، ويُستخدم المفتاح مرة واحدة فقط."
+}
+
+};
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentCipher="file";
+
+let currentMode="encode";
+
+let caesarKey=0;
+let otpGeneratedForLength=0;
+
+const CUSTOM_CIPHERS_STORAGE_KEY="altCustomCiphersV1";
+let customCiphers=loadCustomCiphers();
+let editingCustomCipherId=null;
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const cipherButtons=
+document.querySelectorAll(
+".cipher-button"
+);
+
+const infoNumber=
+document.getElementById(
+"infoNumber"
+);
+
+const infoTitle=
+document.getElementById(
+"infoTitle"
+);
+
+const infoDescription=
+document.getElementById(
+"infoDescription"
+);
+
+const filePanel=
+document.getElementById(
+"filePanel"
+);
+
+const altPanel=
+document.getElementById(
+"altPanel"
+);
+
+const numberPanel=
+document.getElementById(
+"numberPanel"
+);
+
+const caesarPanel=
+document.getElementById(
+"caesarPanel"
+);
+
+const inputText=
+document.getElementById(
+"inputText"
+);
+
+const outputText=
+document.getElementById(
+"outputText"
+);
+
+const inputCount=
+document.getElementById(
+"inputCount"
+);
+
+const outputCount=
+document.getElementById(
+"outputCount"
+);
+
+
+/* =========================================================
+   CIPHER BUTTONS
+========================================================= */
+
+cipherButtons.forEach(
+button=>{
+
+button.addEventListener(
+"click",
+()=>{
+
+cipherButtons.forEach(
+b=>
+b.classList.remove("active")
+);
+
+button.classList.add("active");
+
+currentCipher=
+button.dataset.cipher;
+
+updateCipherUI();
+if(currentCipher==="otp") inputText.placeholder=currentMode==="encode"?"اكتب الرسالة العربية هنا...":"الصق الأرقام المشفّرة هنا...";
+else inputText.placeholder="اكتب النص هنا...";
+
+outputText.textContent="";
+
+}
+
+);
+
+}
+);
+
+
+/* =========================================================
+   UPDATE UI
+========================================================= */
+
+function updateCipherUI(){
+
+let info=cipherInfo[currentCipher];
+
+if(currentCipher.startsWith("custom:")){
+  const custom=getCustomCipher(currentCipher.slice(7));
+  info=custom ? {
+    number:"CIPHER "+String(8+customCiphers.findIndex(c=>c.id===custom.id)).padStart(2,"0"),
+    title:custom.name,
+    description:custom.description || "شفرة مخصصة أنشأتها بنفسك. استخدم نفس جدول الرموز عند التشفير وفك الشفرة."
+  } : null;
+}
+
+if(!info){
+  info={number:"CIPHER",title:"شفرة مخصصة",description:"اختر شفرة من القائمة أو أنشئ شفرة جديدة."};
+}
+
+infoNumber.textContent=info.number;
+infoTitle.textContent=info.title;
+infoDescription.textContent=info.description;
+
+filePanel.classList.toggle("hidden",currentCipher!=="file");
+altPanel.classList.toggle("hidden",currentCipher!=="alt");
+numberPanel.classList.toggle("hidden",currentCipher!=="numbers");
+caesarPanel.classList.toggle("hidden",currentCipher!=="caesar");
+document.getElementById("otpPanel").classList.toggle("hidden",currentCipher!=="otp");
+
+ document.querySelectorAll(".cipher-button").forEach(button=>{
+   button.classList.toggle("active",button.dataset.cipher===currentCipher);
+ });
+
+const activeCustomCipher=currentCipher.startsWith("custom:") ? getCustomCipher(currentCipher.slice(7)) : null;
+document.body.classList.toggle("custom-cipher-active",!!activeCustomCipher);
+if(activeCustomCipher){
+  document.documentElement.style.setProperty("--active-cipher-accent",activeCustomCipher.color||"#b432ff");
+}
+if(activeCustomCipher) renderCustomCipherTable(activeCustomCipher);
+}
+
+
+/* =========================================================
+   MODE
+========================================================= */
+
+document
+.getElementById("encodeMode")
+.addEventListener(
+"click",
+()=>{
+
+currentMode="encode";
+
+document
+.getElementById("encodeMode")
+.classList.add("active");
+
+document
+.getElementById("decodeMode")
+.classList.remove("active");
+if(currentCipher==="otp") inputText.placeholder="اكتب الرسالة العربية هنا...";
+
+}
+);
+
+
+document
+.getElementById("decodeMode")
+.addEventListener(
+"click",
+()=>{
+
+currentMode="decode";
+
+document
+.getElementById("decodeMode")
+.classList.add("active");
+
+document
+.getElementById("encodeMode")
+.classList.remove("active");
+if(currentCipher==="otp") inputText.placeholder="الصق الأرقام المشفّرة هنا...";
+
+}
+);
+
+
+/* =========================================================
+   RUN
+========================================================= */
+
+document
+.getElementById("runButton")
+.addEventListener(
+"click",
+runCipher
+);
+
+
+function runCipher(){
+
+const text=
+inputText.value;
+
+if(!text){
+
+outputText.textContent=
+"اكتب نصًا أولًا.";
+
+return;
+
+}
+
+let result="";
+
+
+if(currentCipher==="file"){
+
+result=
+currentMode==="encode"
+?
+encodeFile(text)
+:
+decodeFile(text);
+
+}
+
+else if(currentCipher==="alt"){
+
+result=
+currentMode==="encode"
+?
+encodeAlt(text)
+:
+decodeAlt(text);
+
+}
+
+else if(currentCipher==="numbers"){
+
+result=
+currentMode==="encode"
+?
+encodeNumbers(text)
+:
+decodeNumbers(text);
+
+}
+
+else if(currentCipher==="atbash"){
+
+result=
+transformAtbash(text);
+
+}
+
+else if(currentCipher==="caesar"){
+
+result=
+transformCaesar(
+text,
+currentMode==="encode"
+?
+caesarKey
+:
+-caesarKey
+);
+
+}
+
+else if(currentCipher==="morse"){
+
+result=
+currentMode==="encode"
+?
+encodeMorse(text)
+:
+decodeMorse(text);
+
+}
+else if(currentCipher==="otp"){
+  const key=document.getElementById("otpKeyInput").value;
+  try{
+    result=currentMode==="encode" ? otpEncryptArabic(text,key) : otpDecryptArabic(text,key);
+    document.getElementById("otpStatus").textContent=currentMode==="encode" ? "تم التشفير. لا تستخدم هذا المفتاح مرة أخرى." : "تم فك التشفير باستخدام المفتاح المدخل.";
+  }catch(err){
+    result="خطأ: "+err.message;
+    document.getElementById("otpStatus").textContent=err.message;
+  }
+}
+else if(currentCipher.startsWith("custom:")){
+  const custom=getCustomCipher(currentCipher.slice(7));
+  if(!custom){
+    result="لم يتم العثور على الشفرة. اختر شفرة محفوظة أو أنشئ واحدة جديدة.";
+  }else{
+    result=currentMode==="encode" ? encodeCustomCipher(text,custom) : decodeCustomCipher(text,custom);
+  }
+}
+
+outputText.textContent=
+result;
+
+updateCounts();
+
+}
+
+
+/* =========================================================
+   ONE-TIME PAD — numeric, digit-by-digit modulo 10
+========================================================= */
+function otpCleanDigits(value){return String(value||"").replace(/[^0-9]/g,"");}
+function otpGroupDigits(digits){return digits.match(/.{1,4}/g)?.join(" ")||"";}
+function otpPlainToDigits(text){
+  const chars=Array.from(text).filter(ch=>!/[\sـ]/u.test(ch));
+  if(!chars.length) throw new Error("اكتب رسالة تحتوي على حروف عربية.");
+  const unknown=chars.find(ch=>!arabicAlphabet.includes(ch));
+  if(unknown) throw new Error("الحرف «"+unknown+"» غير موجود في جدول الأرقام الحالي. استخدم الحروف العربية المدعومة فقط.");
+  return chars.map(ch=>String(arabicAlphabet.indexOf(ch)+1).padStart(2,"0")).join("");
+}
+function otpEncryptArabic(text,keyText){
+  const plain=otpPlainToDigits(text);
+  const key=otpCleanDigits(keyText);
+  if(!key) throw new Error("ولّد مفتاحًا أو أدخل مفتاحًا رقميًا أولًا.");
+  if(key.length!==plain.length) throw new Error("طول المفتاح غير مطابق: الرسالة تحتاج "+plain.length+" رقمًا، والمفتاح يحتوي على "+key.length+".");
+  let out="";
+  for(let i=0;i<plain.length;i++) out+=String((Number(plain[i])+Number(key[i]))%10);
+  return otpGroupDigits(out);
+}
+function otpDecryptArabic(cipherText,keyText){
+  const cipher=otpCleanDigits(cipherText);
+  const key=otpCleanDigits(keyText);
+  if(!cipher) throw new Error("أدخل الأرقام المشفّرة أولًا.");
+  if(!key) throw new Error("أدخل المفتاح الأصلي نفسه.");
+  if(key.length!==cipher.length) throw new Error("طول المفتاح غير مطابق: النص يحتوي على "+cipher.length+" رقمًا، والمفتاح يحتوي على "+key.length+".");
+  let digits="";
+  for(let i=0;i<cipher.length;i++) digits+=String((Number(cipher[i])-Number(key[i])+10)%10);
+  if(digits.length%2!==0) throw new Error("عدد الأرقام بعد فك المفتاح يجب أن يكون زوجيًا.");
+  let text="";
+  for(let i=0;i<digits.length;i+=2){
+    const n=Number(digits.slice(i,i+2));
+    if(n<1||n>28) throw new Error("نتيجة غير صالحة عند الزوج "+digits.slice(i,i+2)+". راجع المفتاح والرسالة.");
+    text+=arabicAlphabet[n-1];
+  }
+  return text;
+}
+document.getElementById("otpGenerateKey").addEventListener("click",()=>{
+  const source=document.getElementById("inputText").value;
+  let digits;
+  try{digits=otpPlainToDigits(source);}catch(err){document.getElementById("otpStatus").textContent=err.message;return;}
+  if(!window.crypto||!window.crypto.getRandomValues){document.getElementById("otpStatus").textContent="المتصفح لا يوفّر مولّد أرقام عشوائية آمنًا؛ افتح الصفحة في متصفح حديث.";return;}
+  let key="";
+  while(key.length<digits.length){
+    const bytes=new Uint8Array(Math.max(32,digits.length-key.length));
+    window.crypto.getRandomValues(bytes);
+    for(const byte of bytes){
+      if(byte<250){key+=String(byte%10);if(key.length===digits.length)break;}
+    }
+  }
+  document.getElementById("otpKeyInput").value=otpGroupDigits(key);
+  otpGeneratedForLength=digits.length;
+  document.getElementById("otpStatus").textContent="تم توليد مفتاح من "+key.length+" رقمًا. استخدمه لهذه الرسالة فقط.";
+});
+document.getElementById("otpCopyKey").addEventListener("click",async()=>{
+  const key=document.getElementById("otpKeyInput").value.trim();
+  if(!key){document.getElementById("otpStatus").textContent="لا يوجد مفتاح لنسخه.";return;}
+  try{await navigator.clipboard.writeText(key);document.getElementById("otpStatus").textContent="تم نسخ المفتاح.";}
+  catch(e){document.getElementById("otpKeyInput").select();document.getElementById("otpStatus").textContent="حدد المفتاح وانسخه يدويًا.";}
+});
+
+/* =========================================================
+   NUMBERS
+========================================================= */
+
+function encodeNumbers(text){
+
+return Array.from(text)
+.map(char=>{
+
+const index=
+arabicAlphabet.indexOf(char);
+
+if(index===-1)
+return char;
+
+return index+1;
+
+})
+.join(" ");
+
+}
+
+
+function decodeNumbers(text){
+
+return text
+.trim()
+.split(/\s+/)
+.map(value=>{
+
+const number=
+parseInt(value);
+
+if(
+!number ||
+number<1 ||
+number>28
+)
+return value;
+
+return arabicAlphabet[
+number-1
+];
+
+})
+.join("");
+
+}
+
+
+/* =========================================================
+   ATBASH
+========================================================= */
+
+function transformAtbash(text){
+
+return Array.from(text)
+.map(char=>{
+
+const index=
+arabicAlphabet.indexOf(char);
+
+if(index===-1)
+return char;
+
+return arabicAlphabet[
+27-index
+];
+
+})
+.join("");
+
+}
+
+
+/* =========================================================
+   CAESAR
+========================================================= */
+
+function transformCaesar(
+text,
+shift
+){
+
+return Array.from(text)
+.map(char=>{
+
+const index=
+arabicAlphabet.indexOf(char);
+
+if(index===-1)
+return char;
+
+return arabicAlphabet[
+(
+index+
+shift+
+28
+)%28
+];
+
+})
+.join("");
+
+}
+
+
+/* =========================================================
+   ALT
+========================================================= */
+
+function encodeAlt(text){
+
+return Array.from(text)
+.map(char=>{
+
+const index=
+arabicAlphabet.indexOf(char);
+
+if(index===-1)
+return char;
+
+return altSymbols[index];
+
+})
+.join("");
+
+}
+
+
+function decodeAlt(text){
+
+return Array.from(text)
+.map(char=>{
+
+const index=
+altSymbols.indexOf(char);
+
+if(index===-1)
+return char;
+
+return arabicAlphabet[index];
+
+})
+.join("");
+
+}
+
+
+/* =========================================================
+   MORSE
+========================================================= */
+
+const morseMap={
+
+"ا":".-",
+"ب":"-...",
+"ت":"-",
+"ث":"-.-.",
+"ج":".---",
+"ح":"....",
+"خ":"---",
+"د":"-..",
+"ذ":"--..",
+"ر":".-.",
+"ز":"--..",
+"س":"...",
+"ش":"----",
+"ص":"-..-",
+"ض":"...-",
+"ط":"..-",
+"ظ":"-.--",
+"ع":".-..",
+"غ":"--.",
+"ف":"..-.",
+"ق":"--.-",
+"ك":"-.-",
+"ل":".-..",
+"م":"--",
+"ن":"-.",
+"ه":"..-..",
+"و":".--",
+"ي":"-.--",
+" ":"/"
+
+};
+
+
+const reverseMorse={};
+
+Object.keys(morseMap)
+.forEach(key=>{
+reverseMorse[
+morseMap[key]
+]=key;
+});
+
+
+function encodeMorse(text){
+
+return Array.from(text)
+.map(char=>
+morseMap[
+char.toLowerCase()
+]||char
+)
+.join(" ");
+
+}
+
+
+function decodeMorse(text){
+
+return text
+.split(/\s+/)
+.map(code=>{
+
+if(code==="/")
+return " ";
+
+return reverseMorse[code]||code;
+
+})
+.join("");
+
+}
+
+
+/* =========================================================
+   FILE
+========================================================= */
+
+function normalizeFileArabic(value){
+  return value
+    .replace(/[أإآٱ]/g,"ا")
+    .replace(/ى/g,"ي")
+    .replace(/ة/g,"ه");
+}
+
+function encodeFile(text){
+  if(!text.trim()) return "";
+
+  let wordNumber=0;
+  return text.trim().split(/\s+/).filter(Boolean).map(word=>{
+    wordNumber++;
+    return Array.from(normalizeFileArabic(word)).map((char,letterIndex)=>{
+      const index=arabicAlphabet.indexOf(char);
+      if(index===-1) return char;
+
+      const file=String(Math.floor(index/7)+1).padStart(2,"0");
+      const line=String((index%7)+1).padStart(2,"0");
+      const word=String(wordNumber).padStart(2,"0");
+      const letter=String(letterIndex+1).padStart(2,"0");
+      return `${file}-${line}-${word}-${letter}`;
+    }).join(" ");
+  }).join(" / ");
+}
+
+function decodeFile(text){
+  if(!text.trim()) return "";
+
+  return text.split(/\s*\/\s*/).map(word=>{
+    return word.trim().split(/\s+/).filter(Boolean).map(token=>{
+      const match=token.match(/^(\d{1,2})-(\d{1,2})-(\d{1,2})-(\d{1,2})$/);
+      if(!match) return token;
+
+      const file=Number(match[1]);
+      const line=Number(match[2]);
+      if(file<1 || file>4 || line<1 || line>7) return token;
+
+      const index=(file-1)*7+(line-1);
+      return arabicAlphabet[index] || token;
+    }).join("");
+  }).join(" ");
+}
+
+/* =========================================================
+   COUNTS
+========================================================= */
+
+function updateCounts(){
+
+inputCount.textContent=
+inputText.value.length;
+
+outputCount.textContent=
+outputText.textContent.length;
+
+}
+
+inputText.addEventListener(
+"input",
+updateCounts
+);
+
+
+/* =========================================================
+   CLEAR
+========================================================= */
+
+document
+.getElementById("clearButton")
+.addEventListener(
+"click",
+()=>{
+
+inputText.value="";
+
+outputText.textContent="";
+
+updateCounts();
+
+}
+);
+
+
+/* =========================================================
+   COPY
+========================================================= */
+
+document
+.getElementById("copyButton")
+.addEventListener(
+"click",
+async()=>{
+
+const text=
+outputText.textContent;
+
+if(!text)
+return;
+
+try{
+
+await navigator.clipboard.writeText(
+text
+);
+
+}
+catch(error){
+
+const temp=
+document.createElement(
+"textarea"
+);
+
+temp.value=text;
+
+document.body.appendChild(
+temp
+);
+
+temp.select();
+
+document.execCommand(
+"copy"
+);
+
+temp.remove();
+
+}
+
+}
+);
+
+
+/* =========================================================
+   ALT TABLE
+========================================================= */
+
+function buildAltTable(){
+
+const body=
+document.getElementById(
+"altTableBody"
+);
+
+body.innerHTML="";
+
+altSymbols.forEach(
+(symbol,index)=>{
+
+const row=
+document.createElement("tr");
+
+row.innerHTML=`
+
+<td>
+${index+1}
+</td>
+
+<td style="
+font-size:22px;
+">
+${symbol}
+</td>
+
+<td>
+Alt + ${index+1}
+</td>
+
+`;
+
+body.appendChild(row);
+
+}
+);
+
+}
+
+
+/* =========================================================
+   NUMBER TABLE
+========================================================= */
+
+function buildNumberTable(){
+
+const body=
+document.getElementById(
+"numberTableBody"
+);
+
+body.innerHTML="";
+
+arabicAlphabet.forEach(
+(letter,index)=>{
+
+const row=
+document.createElement("tr");
+
+row.innerHTML=`
+
+<td>
+${letter}
+</td>
+
+<td>
+${index+1}
+</td>
+
+`;
+
+body.appendChild(row);
+
+}
+);
+
+}
+
+
+/* =========================================================
+   CAESAR ELEMENTS
+========================================================= */
+
+const innerWheel=
+document.getElementById(
+"innerWheel"
+);
+
+const outerWheel=
+document.getElementById(
+"outerWheel"
+);
+
+const centerNumber=
+document.getElementById(
+"centerNumber"
+);
+
+const caesarLiveKey=
+document.getElementById(
+"caesarLiveKey"
+);
+
+const caesarExample=
+document.getElementById(
+"caesarExample"
+);
+
+const mappingWrapper=
+document.getElementById(
+"mappingWrapper"
+);
+
+
+/* =========================================================
+   CREATE CAESAR WHEELS
+========================================================= */
+
+function createCaesarWheels(){
+
+innerWheel.innerHTML="";
+
+outerWheel.innerHTML="";
+
+arabicAlphabet.forEach(
+(letter,index)=>{
+
+createWheelLetter(
+innerWheel,
+letter,
+index,
+"inner-letter",
+108
+);
+
+createWheelLetter(
+outerWheel,
+letter,
+index,
+"outer-letter",
+198
+);
+
+}
+);
+
+}
+
+
+function createWheelLetter(
+wheel,
+letter,
+index,
+className,
+radius
+){
+
+const element=
+document.createElement(
+"div"
+);
+
+element.className=
+"wheel-letter "+
+className;
+
+element.textContent=
+letter;
+
+element.dataset.index=
+index;
+
+const angle=
+index*(360/28);
+
+const radians=
+angle*Math.PI/180;
+
+const x=
+Math.sin(radians)*radius;
+
+const y=
+-Math.cos(radians)*radius;
+
+element.style.transform=
+`translate(${x}px,${y}px)`;
+
+wheel.appendChild(element);
+
+}
+
+
+/* =========================================================
+   UPDATE WHEEL
+========================================================= */
+
+function updateCaesarWheel(
+animate=true
+){
+
+const step=
+360/28;
+
+const rotation=
+caesarKey*step;
+
+outerWheel.style.transition=
+animate
+?
+"transform .35s cubic-bezier(.2,.8,.2,1)"
+:
+"none";
+
+outerWheel.style.transform=
+`translate(-50%,-50%) rotate(${-rotation}deg)`;
+
+
+const letters=
+outerWheel.querySelectorAll(
+".outer-letter"
+);
+
+letters.forEach(
+letter=>{
+
+const index=
+Number(
+letter.dataset.index
+);
+
+const angle=
+index*step;
+
+const radians=
+angle*Math.PI/180;
+
+const radius=198;
+
+const x=
+Math.sin(radians)*radius;
+
+const y=
+-Math.cos(radians)*radius;
+
+letter.style.transform=
+`translate(${x}px,${y}px) rotate(${rotation}deg)`;
+
+}
+);
+
+
+centerNumber.textContent=
+caesarKey;
+
+caesarLiveKey.textContent=
+`KEY ${caesarKey}`;
+
+updateCaesarExample();
+
+buildCaesarMapping();
+
+}
+
+
+/* =========================================================
+   SET KEY
+========================================================= */
+
+function setCaesarKey(value){
+
+caesarKey=
+(
+value%28+
+28
+)%28;
+
+updateCaesarWheel();
+
+}
+
+
+/* =========================================================
+   EXAMPLE
+========================================================= */
+
+function updateCaesarExample(){
+
+const original=
+arabicAlphabet[0];
+
+const result=
+arabicAlphabet[
+caesarKey
+];
+
+caesarExample.textContent=
+`${original} ← ${result}`;
+
+}
+
+
+/* =========================================================
+   MAPPING
+========================================================= */
+
+function buildCaesarMapping(){
+
+mappingWrapper.innerHTML="";
+
+const row=
+document.createElement(
+"div"
+);
+
+row.className=
+"mapping-row";
+
+arabicAlphabet.forEach(
+(letter,index)=>{
+
+const result=
+arabicAlphabet[
+(index+caesarKey)%28
+];
+
+const item=
+document.createElement(
+"div"
+);
+
+item.className=
+"mapping-item";
+
+item.innerHTML=`
+
+<div class="mapping-original">
+${letter}
+</div>
+
+<div class="mapping-arrow">
+↓
+</div>
+
+<div class="mapping-result">
+${result}
+</div>
+
+`;
+
+row.appendChild(item);
+
+}
+);
+
+mappingWrapper.appendChild(row);
+
+}
+
+
+/* =========================================================
+   CAESAR BUTTONS
+========================================================= */
+
+document
+.getElementById("caesarRight")
+.addEventListener(
+"click",
+()=>{
+setCaesarKey(
+caesarKey+1
+);
+}
+);
+
+
+document
+.getElementById("caesarLeft")
+.addEventListener(
+"click",
+()=>{
+setCaesarKey(
+caesarKey-1
+);
+}
+);
+
+
+document
+.getElementById("caesarReset")
+.addEventListener(
+"click",
+()=>{
+setCaesarKey(0);
+}
+);
+
+
+/* =========================================================
+   CAESAR DRAG
+========================================================= */
+
+let draggingCaesar=false;
+
+let dragStartY=0;
+
+let dragStartKey=0;
+
+
+outerWheel.addEventListener(
+"pointerdown",
+event=>{
+
+event.preventDefault();
+
+draggingCaesar=true;
+
+dragStartY=
+event.clientY;
+
+dragStartKey=
+caesarKey;
+
+outerWheel.style.transition=
+"none";
+
+try{
+
+outerWheel.setPointerCapture(
+event.pointerId
+);
+
+}
+catch(error){}
+
+}
+);
+
+
+outerWheel.addEventListener(
+"pointermove",
+event=>{
+
+if(!draggingCaesar)
+return;
+
+event.preventDefault();
+
+const delta=
+dragStartY-
+event.clientY;
+
+const steps=
+Math.round(
+delta/20
+);
+
+const newKey=
+dragStartKey+
+steps;
+
+if(newKey!==caesarKey){
+
+setCaesarKey(
+newKey
+);
+
+}
+
+}
+);
+
+
+function stopCaesarDrag(event){
+
+draggingCaesar=false;
+
+try{
+
+outerWheel.releasePointerCapture(
+event.pointerId
+);
+
+}
+catch(error){}
+
+}
+
+
+outerWheel.addEventListener(
+"pointerup",
+stopCaesarDrag
+);
+
+outerWheel.addEventListener(
+"pointercancel",
+stopCaesarDrag
+);
+
+
+/* =========================================================
+   MOUSE WHEEL
+========================================================= */
+
+outerWheel.addEventListener(
+"wheel",
+event=>{
+
+event.preventDefault();
+
+if(event.deltaY>0){
+
+setCaesarKey(
+caesarKey+1
+);
+
+}
+else{
+
+setCaesarKey(
+caesarKey-1
+);
+
+}
+
+},
+{
+passive:false
+}
+);
+
+
+/* =========================================================
+   KEYBOARD CAESAR
+========================================================= */
+
+document.addEventListener(
+"keydown",
+event=>{
+
+if(currentCipher!=="caesar")
+return;
+
+if(event.key==="ArrowUp"){
+
+setCaesarKey(
+caesarKey+1
+);
+
+}
+
+if(event.key==="ArrowDown"){
+
+setCaesarKey(
+caesarKey-1
+);
+
+}
+
+}
+);
+
+
+/* =========================================================
+   PATTERN LOCK
+========================================================= */
+
+const lockScreen=
+document.getElementById(
+"lockScreen"
+);
+
+const patternArea=
+document.getElementById(
+"patternArea"
+);
+
+const patternLine=
+document.getElementById(
+"patternLine"
+);
+
+const patternDots=
+document.querySelectorAll(
+".pattern-dot"
+);
+
+const lockStatus=
+document.getElementById(
+"lockStatus"
+);
+
+
+const correctPattern=[
+1,2,5,8,9
+];
+
+
+let pattern=[];
+
+let drawingPattern=false;
+
+
+/* =========================================================
+   DOT CENTER
+========================================================= */
+
+function getDotCenter(index){
+
+const dot=
+document.querySelector(
+`.pattern-dot[data-index="${index}"]`
+);
+
+const areaRect=
+patternArea.getBoundingClientRect();
+
+const rect=
+dot.getBoundingClientRect();
+
+return{
+
+x:
+rect.left-
+areaRect.left+
+rect.width/2,
+
+y:
+rect.top-
+areaRect.top+
+rect.height/2
+
+};
+
+}
+
+
+/* =========================================================
+   PATTERN LINE
+========================================================= */
+
+function updatePatternLine(
+extraX=null,
+extraY=null
+){
+
+let points=
+pattern.map(
+index=>{
+
+const point=
+getDotCenter(index);
+
+return(
+`${point.x},${point.y}`
+);
+
+}
+);
+
+if(
+extraX!==null &&
+extraY!==null
+){
+
+points.push(
+`${extraX},${extraY}`
+);
+
+}
+
+patternLine.setAttribute(
+"points",
+points.join(" ")
+);
+
+}
+
+
+/* =========================================================
+   ADD PATTERN DOT
+========================================================= */
+
+function addPatternDot(index){
+
+if(pattern.includes(index))
+return;
+
+pattern.push(index);
+
+const dot=
+document.querySelector(
+`.pattern-dot[data-index="${index}"]`
+);
+
+if(dot){
+
+dot.classList.add(
+"active"
+);
+
+}
+
+updatePatternLine();
+
+}
+
+
+/* =========================================================
+   PATTERN START
+========================================================= */
+
+patternArea.addEventListener(
+"pointerdown",
+event=>{
+
+event.preventDefault();
+
+drawingPattern=true;
+
+pattern=[];
+
+patternDots.forEach(
+dot=>{
+dot.classList.remove(
+"active",
+"wrong"
+);
+}
+);
+
+const target=
+document.elementFromPoint(
+event.clientX,
+event.clientY
+);
+
+const dot=
+target?.closest(
+".pattern-dot"
+);
+
+if(dot){
+
+addPatternDot(
+Number(
+dot.dataset.index
+)
+);
+
+}
+
+try{
+
+patternArea.setPointerCapture(
+event.pointerId
+);
+
+}
+catch(error){}
+
+}
+);
+
+
+/* =========================================================
+   PATTERN MOVE
+========================================================= */
+
+patternArea.addEventListener(
+"pointermove",
+event=>{
+
+if(!drawingPattern)
+return;
+
+event.preventDefault();
+
+const rect=
+patternArea.getBoundingClientRect();
+
+updatePatternLine(
+event.clientX-
+rect.left,
+
+event.clientY-
+rect.top
+);
+
+const target=
+document.elementFromPoint(
+event.clientX,
+event.clientY
+);
+
+const dot=
+target?.closest(
+".pattern-dot"
+);
+
+if(dot){
+
+addPatternDot(
+Number(
+dot.dataset.index
+)
+);
+
+}
+
+}
+);
+
+
+/* =========================================================
+   PATTERN END
+========================================================= */
+
+patternArea.addEventListener(
+"pointerup",
+event=>{
+
+if(!drawingPattern)
+return;
+
+drawingPattern=false;
+
+updatePatternLine();
+
+checkPattern();
+
+try{
+
+patternArea.releasePointerCapture(
+event.pointerId
+);
+
+}
+catch(error){}
+
+}
+);
+
+
+patternArea.addEventListener(
+"pointercancel",
+()=>{
+drawingPattern=false;
+}
+);
+
+
+/* =========================================================
+   CHECK PATTERN
+========================================================= */
+
+function checkPattern(){
+
+const correct=
+pattern.length===
+correctPattern.length&&
+pattern.every(
+(value,index)=>
+value===
+correctPattern[index]
+);
+
+if(correct){
+
+lockStatus.textContent=
+"تم فتح البرنامج";
+
+setTimeout(
+()=>{
+lockScreen.classList.add(
+"hide"
+);
+},
+500
+);
+
+return;
+
+}
+
+
+lockStatus.textContent=
+"النمط غير صحيح";
+
+lockStatus.classList.add(
+"error"
+);
+
+patternDots.forEach(
+dot=>{
+
+if(
+pattern.includes(
+Number(
+dot.dataset.index
+)
+)
+){
+
+dot.classList.add(
+"wrong"
+);
+
+}
+
+}
+);
+
+setTimeout(
+resetPattern,
+700
+);
+
+}
+
+
+/* =========================================================
+   RESET PATTERN
+========================================================= */
+
+function resetPattern(){
+
+pattern=[];
+
+patternLine.setAttribute(
+"points",
+""
+);
+
+patternDots.forEach(
+dot=>{
+
+dot.classList.remove(
+"active",
+"wrong"
+);
+
+}
+);
+
+lockStatus.textContent=
+"ارسم النمط";
+
+lockStatus.classList.remove(
+"error"
+);
+
+}
+
+
+/* =========================================================
+   CUSTOM CIPHERS: SAVE / EDIT / DELETE / ENCODE / DECODE
+========================================================= */
+
+function loadCustomCiphers(){
+  try{
+    const parsed=JSON.parse(localStorage.getItem(CUSTOM_CIPHERS_STORAGE_KEY)||"[]");
+    if(!Array.isArray(parsed)) return [];
+    return parsed.filter(item=>item && typeof item.id==="string" && typeof item.name==="string" && Array.isArray(item.symbols) && item.symbols.length===28);
+  }catch(error){ return []; }
+}
+
+function persistCustomCiphers(){
+  try{
+    localStorage.setItem(CUSTOM_CIPHERS_STORAGE_KEY,JSON.stringify(customCiphers));
+    return true;
+  }catch(error){
+    setCustomMessage("تعذر الحفظ في المتصفح. تحقق من مساحة التخزين أو إعدادات الخصوصية.",true);
+    return false;
+  }
+}
+
+function getCustomCipher(id){
+  return customCiphers.find(cipher=>cipher.id===id)||null;
+}
+
+function setCustomMessage(message,isError=false){
+  const box=document.getElementById("customCipherMessage");
+  if(!box) return;
+  box.textContent=message;
+  box.style.color=isError ? "#ff7185" : "var(--muted)";
+}
+
+const defaultCustomSymbols=[
+  "α","β","γ","δ","ε","ζ","η","θ","ι","κ","λ","μ","ν","ξ",
+  "ο","π","ρ","σ","τ","υ","φ","χ","ψ","ω","Ж","Я","Ѫ","Ѧ"
+];
+
+function buildCustomSymbolsGrid(values=defaultCustomSymbols){
+  const grid=document.getElementById("customSymbolsGrid");
+  if(!grid) return;
+  grid.replaceChildren();
+  arabicAlphabet.forEach((letter,index)=>{
+    const wrap=document.createElement("div");
+    wrap.className="custom-field";
+    const label=document.createElement("label");
+    label.textContent=letter;
+    label.htmlFor="customSymbol"+index;
+    const input=document.createElement("input");
+    input.type="text";
+    input.id="customSymbol"+index;
+    input.dataset.symbolIndex=String(index);
+    input.maxLength=4;
+    input.autocomplete="off";
+    input.spellcheck=false;
+    input.setAttribute("aria-label","رمز الحرف "+letter);
+    input.value=values && values[index] ? values[index] : "";
+    wrap.append(label,input);
+    grid.append(wrap);
+  });
+}
+
+function readCustomSymbols(){
+  return Array.from(document.querySelectorAll("#customSymbolsGrid input[data-symbol-index]"))
+    .map(input=>input.value.trim());
+}
+
+function validateCustomSymbols(symbols){
+  if(symbols.length!==28) return "يجب إدخال 28 رمزًا.";
+  for(let i=0;i<symbols.length;i++){
+    if(!symbols[i]) return "أكمل الرمز الخاص بالحرف «"+arabicAlphabet[i]+"».";
+    if(Array.from(symbols[i]).length!==1) return "استخدم رمزًا واحدًا فقط لكل حرف؛ الحرف «"+arabicAlphabet[i]+"» يحتاج رمزًا واحدًا.";
+    if(symbols[i]==="ـ" || /\s/.test(symbols[i])) return "لا تستخدم المسافة أو علامة التطويل «ـ» كرمز.";
+  }
+  if(new Set(symbols).size!==symbols.length) return "هناك رموز مكررة. يجب أن يكون لكل حرف رمز مختلف.";
+  return "";
+}
+
+function encodeCustomCipher(text,cipher){
+  const map=new Map(arabicAlphabet.map((letter,index)=>[letter,cipher.symbols[index]]));
+  return text.split(/\s+/).filter(Boolean).map(word=>Array.from(word).map(char=>map.get(char) ?? char).join("")).join("ـ");
+}
+
+function decodeCustomCipher(text,cipher){
+  const reverse=new Map(cipher.symbols.map((symbol,index)=>[symbol,arabicAlphabet[index]]));
+  return text.split("ـ").map(word=>Array.from(word).map(char=>reverse.get(char) ?? char).join("")).join(" ");
+}
+
+function resetCustomEditor(){
+  editingCustomCipherId=null;
+  document.getElementById("customCipherName").value="";
+  document.getElementById("customCipherDescription").value="";
+  document.getElementById("customCipherColor").value="#b432ff";
+  buildCustomSymbolsGrid(defaultCustomSymbols);
+  document.getElementById("saveCustomCipher").textContent="حفظ الشفرة";
+  document.getElementById("deleteCustomCipher").style.display="none";
+  setCustomMessage("اكتب اسمًا جديدًا وحدد الرموز ثم اضغط «حفظ الشفرة».");
+}
+
+function editCustomCipher(id){
+  const cipher=getCustomCipher(id);
+  if(!cipher) return;
+  editingCustomCipherId=id;
+  document.getElementById("customCipherName").value=cipher.name;
+  document.getElementById("customCipherDescription").value=cipher.description||"";
+  document.getElementById("customCipherColor").value=cipher.color||"#b432ff";
+  buildCustomSymbolsGrid(cipher.symbols);
+  document.getElementById("saveCustomCipher").textContent="حفظ التعديلات";
+  document.getElementById("deleteCustomCipher").style.display="inline-block";
+  setCustomMessage("أنت تعدّل الآن: "+cipher.name);
+  openCustomLab(false);
+}
+
+function saveCustomCipher(){
+  const name=document.getElementById("customCipherName").value.trim();
+  const description=document.getElementById("customCipherDescription").value.trim();
+  const color=document.getElementById("customCipherColor").value||"#b432ff";
+  const symbols=readCustomSymbols();
+  if(!name){setCustomMessage("اكتب اسمًا للشفرة أولًا.",true);document.getElementById("customCipherName").focus();return;}
+  const invalid=validateCustomSymbols(symbols);
+  if(invalid){setCustomMessage(invalid,true);return;}
+  const duplicateName=customCiphers.some(cipher=>cipher.name.toLocaleLowerCase()===name.toLocaleLowerCase() && cipher.id!==editingCustomCipherId);
+  if(duplicateName){setCustomMessage("لديك شفرة محفوظة بهذا الاسم بالفعل. اختر اسمًا مختلفًا.",true);return;}
+
+  if(editingCustomCipherId){
+    const index=customCiphers.findIndex(cipher=>cipher.id===editingCustomCipherId);
+    if(index<0){setCustomMessage("لم يتم العثور على الشفرة المراد تعديلها.",true);return;}
+    customCiphers[index]={...customCiphers[index],name,description,symbols,color,updatedAt:Date.now()};
+    if(!persistCustomCiphers()) return;
+    renderCustomCipherButtons();
+    renderCustomCipherList();
+    renderCustomCipherTable(customCiphers[index]);
+    if(currentCipher==="custom:"+customCiphers[index].id){document.documentElement.style.setProperty("--active-cipher-accent",color);document.body.classList.add("custom-cipher-active");}
+    updateCipherUI();
+    setCustomMessage("تم حفظ تعديلات «"+name+"» بنجاح.");
+  }else{
+    const cipher={id:(window.crypto && crypto.randomUUID) ? crypto.randomUUID() : "cc-"+Date.now()+"-"+Math.random().toString(36).slice(2,9),name,description,symbols,color,createdAt:Date.now()};
+    customCiphers.push(cipher);
+    if(!persistCustomCiphers()){customCiphers=customCiphers.filter(item=>item.id!==cipher.id);return;}
+    renderCustomCipherButtons();
+    renderCustomCipherList();
+    resetCustomEditor();
+    setCustomMessage("تم إنشاء «"+name+"» وحفظها. ستجدها في قائمة الشفرات بالأعلى برقمها الجديد.");
+    renderCustomCipherTable(cipher);
+  }
+}
+
+function deleteCustomCipher(id=editingCustomCipherId){
+  if(!id) return;
+  const cipher=getCustomCipher(id);
+  if(!cipher) return;
+  if(!confirm("هل تريد حذف الشفرة «"+cipher.name+"» نهائيًا من هذا المتصفح؟")) return;
+  customCiphers=customCiphers.filter(item=>item.id!==id);
+  if(!persistCustomCiphers()) return;
+  if(currentCipher==="custom:"+id){
+    currentCipher="file";
+    outputText.textContent="";
+  }
+  if(editingCustomCipherId===id) resetCustomEditor();
+  renderCustomCipherButtons();
+  renderCustomCipherList();
+  updateCipherUI();
+  renderCustomCipherTable(currentCipher.startsWith("custom:") ? getCustomCipher(currentCipher.slice(7)) : null);
+  setCustomMessage("تم حذف الشفرة.");
+}
+
+function selectCustomCipher(id){
+  currentCipher="custom:"+id;
+  document.querySelectorAll(".cipher-button").forEach(button=>button.classList.toggle("active",button.dataset.cipher===currentCipher));
+  updateCipherUI();
+  outputText.textContent="";
+  renderCustomCipherTable(getCustomCipher(id));
+  setCustomMessage("الشفرة المحددة جاهزة. اختر «تشفير» أو «فك الشفرة» ثم نفّذ العملية.");
+}
+
+function renderCustomCipherButtons(){
+  const selector=document.querySelector(".cipher-selector");
+  if(!selector) return;
+  selector.querySelectorAll("[data-custom-generated='true']").forEach(button=>button.remove());
+  customCiphers.forEach((cipher,index)=>{
+    const button=document.createElement("button");
+    button.type="button";
+    button.className="cipher-button custom-cipher-button";
+    button.dataset.cipher="custom:"+cipher.id;
+    button.dataset.customGenerated="true";
+    button.style.setProperty("--cipher-accent",cipher.color||"#b432ff");
+    const number=document.createElement("span");
+    number.className="cipher-number";
+    number.textContent=String(index+8).padStart(2,"0");
+    button.append(number,document.createTextNode(cipher.name));
+    button.title=cipher.description||cipher.name;
+    button.addEventListener("click",()=>selectCustomCipher(cipher.id));
+    selector.append(button);
+  });
+}
+
+function renderCustomCipherList(){
+  const list=document.getElementById("customCipherList");
+  if(!list) return;
+  list.replaceChildren();
+  if(!customCiphers.length){
+    const empty=document.createElement("div");
+    empty.className="custom-empty";
+    empty.textContent="لم تنشئ أي شفرات بعد. أول شفرة تحفظها ستظهر هنا وفي قائمة الشفرات بالأعلى.";
+    list.append(empty);
+    return;
+  }
+  customCiphers.forEach((cipher,index)=>{
+    const item=document.createElement("div");
+    item.className="custom-list-item";
+    const details=document.createElement("div");
+    details.style.minWidth="0";
+    const name=document.createElement("div");
+    name.className="custom-list-name";
+    name.textContent=String(index+8).padStart(2,"0")+" · "+cipher.name;
+    const desc=document.createElement("div");
+    desc.className="custom-list-desc";
+    desc.textContent=cipher.description||"شفرة مخصصة — 28 رمزًا";
+    details.append(name,desc);
+    const actions=document.createElement("div");
+    actions.className="custom-list-actions";
+    const use=document.createElement("button");
+    use.type="button";use.className="custom-mini";use.textContent="استخدام";use.addEventListener("click",()=>{selectCustomCipher(cipher.id);closeCustomLab();});
+    const edit=document.createElement("button");
+    edit.type="button";edit.className="custom-mini";edit.textContent="تعديل";edit.addEventListener("click",()=>editCustomCipher(cipher.id));
+    const del=document.createElement("button");
+    del.type="button";del.className="custom-mini";del.textContent="حذف";del.addEventListener("click",()=>deleteCustomCipher(cipher.id));
+    actions.append(use,edit,del);
+    item.append(details,actions);
+    list.append(item);
+  });
+}
+
+function renderCustomCipherTable(cipher){
+  const container=document.getElementById("customCipherTableContainer");
+  if(!container) return;
+  container.replaceChildren();
+  if(!cipher){
+    const empty=document.createElement("div");
+    empty.className="custom-empty";
+    empty.textContent="اختر إحدى شفراتك المحفوظة لعرض جدول الحروف والرموز الخاص بها.";
+    container.append(empty);
+    return;
+  }
+  const table=document.createElement("table");
+  const thead=document.createElement("thead");
+  const header=document.createElement("tr");
+  ["الحرف العربي","الرمز الخاص"].forEach(text=>{const th=document.createElement("th");th.textContent=text;header.append(th);});
+  thead.append(header);
+  const tbody=document.createElement("tbody");
+  arabicAlphabet.forEach((letter,index)=>{
+    const tr=document.createElement("tr");
+    const tdLetter=document.createElement("td");tdLetter.textContent=letter;
+    const tdSymbol=document.createElement("td");tdSymbol.textContent=cipher.symbols[index];tdSymbol.style.color=cipher.color||"var(--purple-light)";tdSymbol.style.fontSize="17px";
+    tr.append(tdLetter,tdSymbol);tbody.append(tr);
+  });
+  table.append(thead,tbody);container.append(table);
+}
+
+/* Floating cipher lab controls */
+const customLab=document.getElementById("customCipherManager");
+const customLabBackdrop=document.getElementById("customLabBackdrop");
+function openCustomLab(resetEditor=false){
+  if(resetEditor) resetCustomEditor();
+  customLab.classList.add("open");
+  customLabBackdrop.classList.add("open");
+  document.body.classList.add("custom-lab-open");
+  document.getElementById("openCustomLab").setAttribute("aria-expanded","true");
+  window.setTimeout(()=>document.getElementById("customCipherName").focus({preventScroll:true}),180);
+}
+function closeCustomLab(){
+  customLab.classList.remove("open");
+  customLabBackdrop.classList.remove("open");
+  document.body.classList.remove("custom-lab-open");
+  document.getElementById("openCustomLab").setAttribute("aria-expanded","false");
+}
+document.getElementById("openCustomLab").addEventListener("click",()=>openCustomLab(true));
+document.getElementById("closeCustomLab").addEventListener("click",closeCustomLab);
+customLabBackdrop.addEventListener("click",closeCustomLab);
+document.addEventListener("keydown",event=>{if(event.key==="Escape" && customLab.classList.contains("open"))closeCustomLab();});
+
+/* Editor controls */
+document.getElementById("saveCustomCipher").addEventListener("click",saveCustomCipher);
+document.getElementById("newCustomCipher").addEventListener("click",resetCustomEditor);
+document.getElementById("deleteCustomCipher").addEventListener("click",()=>deleteCustomCipher());
+document.getElementById("fillCustomDefaults").addEventListener("click",()=>{buildCustomSymbolsGrid(defaultCustomSymbols);setCustomMessage("تم ملء الرموز الافتراضية. يمكنك تغيير أي رمز قبل الحفظ.");});
+document.getElementById("clearCustomSymbols").addEventListener("click",()=>{buildCustomSymbolsGrid(Array(28).fill(""));setCustomMessage("تم مسح الرموز. أدخل رمزًا مختلفًا لكل حرف.");});
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+buildAltTable();
+
+buildNumberTable();
+
+createCaesarWheels();
+
+setCaesarKey(0);
+
+buildCustomSymbolsGrid(defaultCustomSymbols);
+renderCustomCipherButtons();
+renderCustomCipherList();
+renderCustomCipherTable(null);
+
+updateCipherUI();
+
+updateCounts();
+
+
+/* =========================================================
+   USER SETTINGS + MICRO INTERACTION SOUND
+========================================================= */
+(function initCipherSettings(){
+  const $=id=>document.getElementById(id);
+  const settingsKey='altCipherSettingsV1';
+  const defaults={sound:true,matrix:true,motion:true,accent:'#b432ff'};
+  let prefs={...defaults};
+  try{prefs={...defaults,...JSON.parse(localStorage.getItem(settingsKey)||'{}')};}catch(e){}
+  const panel=$('settingsPanel'), backdrop=$('settingsBackdrop');
+  if(!panel||!backdrop)return;
+  let audioContext=null,lastSoundAt=0;
+  function save(){try{localStorage.setItem(settingsKey,JSON.stringify(prefs));$('settingsSaved').textContent='تم الحفظ';setTimeout(()=>{if($('settingsSaved'))$('settingsSaved').textContent='تلقائي';},1200);}catch(e){$('settingsSaved').textContent='جلسة حالية';}}
+  function apply(){
+    document.body.classList.toggle('matrix-off',!prefs.matrix);
+    document.body.classList.toggle('effects-off',!prefs.motion);
+    document.documentElement.style.setProperty('--purple',prefs.accent||defaults.accent);
+    const accent=$('settingAccent');if(accent)accent.value=prefs.accent||defaults.accent;
+    $('settingSound').checked=!!prefs.sound;$('settingMatrix').checked=!!prefs.matrix;$('settingMotion').checked=!!prefs.motion;
+  }
+  function open(){panel.classList.add('open');backdrop.classList.add('open');panel.setAttribute('aria-hidden','false');backdrop.setAttribute('aria-hidden','false');$('openSettings').setAttribute('aria-expanded','true');}
+  function close(){panel.classList.remove('open');backdrop.classList.remove('open');panel.setAttribute('aria-hidden','true');backdrop.setAttribute('aria-hidden','true');$('openSettings').setAttribute('aria-expanded','false');}
+  function beep(kind='tap'){
+    if(!prefs.sound)return;
+    const now=Date.now();if(kind==='tap'&&now-lastSoundAt<55)return;lastSoundAt=now;
+    try{
+      const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+      if(!audioContext)audioContext=new AC();if(audioContext.state==='suspended')audioContext.resume();
+      const osc=audioContext.createOscillator(),gain=audioContext.createGain();
+      const start=audioContext.currentTime;osc.type='sine';osc.frequency.setValueAtTime(kind==='success'?880:kind==='open'?620:kind==='test'?740:460,start);
+      osc.frequency.exponentialRampToValueAtTime(kind==='success'?1240:kind==='open'?820:520,start+.065);
+      gain.gain.setValueAtTime(.0001,start);gain.gain.exponentialRampToValueAtTime(kind==='test'?.055:.025,start+.008);gain.gain.exponentialRampToValueAtTime(.0001,start+.105);
+      osc.connect(gain);gain.connect(audioContext.destination);osc.start(start);osc.stop(start+.11);
+    }catch(e){}
+  }
+  $('openSettings').addEventListener('click',()=>{open();beep('open');});
+  $('closeSettings').addEventListener('click',close);backdrop.addEventListener('click',close);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&panel.classList.contains('open'))close();});
+  $('settingSound').addEventListener('change',e=>{prefs.sound=e.target.checked;save();if(prefs.sound)beep('success');});
+  $('settingMatrix').addEventListener('change',e=>{prefs.matrix=e.target.checked;apply();save();beep();});
+  $('settingMotion').addEventListener('change',e=>{prefs.motion=e.target.checked;apply();save();beep();});
+  $('settingAccent').addEventListener('input',e=>{prefs.accent=e.target.value;apply();save();});
+  $('resetAccent').addEventListener('click',()=>{prefs.accent=defaults.accent;apply();save();beep('success');});
+  $('testSound').addEventListener('click',()=>{prefs.sound=true;$('settingSound').checked=true;save();beep('test');setTimeout(()=>beep('success'),120);});
+  const colorPicker=$('customCipherColor'),randomColor=$('randomCipherColor');
+  if(randomColor&&colorPicker)randomColor.addEventListener('click',()=>{const palette=['#b432ff','#00d9ff','#ff4fd8','#7cfc98','#ffb84d','#ff526f','#6d8cff','#e5ff4d','#ffffff'];colorPicker.value=palette[Math.floor(Math.random()*palette.length)];beep('success');});
+  // Add a quiet electronic click to interactive controls, without overriding their behavior.
+  document.addEventListener('click',e=>{const target=e.target.closest('button,[role="button"]');if(target&&!target.disabled&&!target.closest('#settingsPanel'))beep('tap');},true);
+  apply();
+})();
+
+</script>
+
+</body>
+
+</html>
