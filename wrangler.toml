@@ -9,5 +9,5 @@ run_worker_first = ["/api/*"]
 
 [[d1_databases]]
 binding = "DB"
-database_name = "shadow-files-db"
-database_id = "PUT_YOUR_D1_DATABASE_ID_HERE"
+database_name = "shadow-fils-db"
+database_id = "8aea3b90-0ccd-4610-a5bf-0319600ddd15"
