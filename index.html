@@ -146,7 +146,25 @@ button,.btn{max-width:100%;white-space:normal;overflow-wrap:anywhere;touch-actio
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
-</style></head>
+</style>
+<style id="sf-layer-auth-fix">
+/* FIX: keep the investigator gate and online panel above every page layer.
+   The previous body>* rule accidentally overrode their z-index. */
+body>*:not(#sfParticleLayer)#sfOnlineGate{
+  position:fixed!important;
+  inset:0!important;
+  z-index:2147483000!important;
+}
+body>*:not(#sfParticleLayer)#sfOnlinePanel{
+  position:fixed!important;
+  z-index:2147482999!important;
+  isolation:isolate!important;
+}
+#sfOnlineGate{display:grid!important}
+#sfOnlineGate .panel{position:relative;z-index:1}
+</style>
+
+</head>
 <body><div class="wrap">
 <header class="topbar"><div class="brand"><div class="sigil">⌕</div><div><h1>SHADOW FILES</h1><p>INTERACTIVE INVESTIGATION SYSTEM</p></div></div><div class="case-chip mono">CLASSIFIED · FILE #0001</div><div class="top-actions"><button class="btn ghost" onclick="editProfile()">البروفايل</button><button class="btn ghost cipher-link" onclick="openCipherSite()">الشفرة السرية</button><button class="btn ghost" onclick="downloadGameInfo()">تحميل / تثبيت</button><button class="btn ghost" onclick="showHelp()">دليل اللعب</button><button class="btn ghost" onclick="resetProgress()">إعادة القضية</button></div></header>
 <main id="app"></main><div class="footer mono">SHADOW FILES // FILE 001 // LOCAL CASE SYSTEM</div></div>
