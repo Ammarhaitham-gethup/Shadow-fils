@@ -376,13 +376,15 @@ const canvas=document.getElementById('sfParticleLayer');if(canvas&&canvas.getCon
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>\n<script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
 /* SHADOW FILES ONLINE — embedded JavaScript */
 
 (() => {
 'use strict';
 const SUPABASE_URL='https://chhmhpgpsdzogazgqgbi.supabase.co';
 const SUPABASE_KEY='sb_publishable_krJYcUPaEAbFTlBIqL7vZQ_-vDF9r0R';
+if(!window.supabase?.createClient){console.error('Supabase SDK did not load.');return;}
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 let user=null, room=null, channel=null, applyingRemote=false, poller=null;
 const $=s=>document.querySelector(s);
@@ -397,11 +399,11 @@ function css(){
  #sfOnlineGate .primary{background:linear-gradient(135deg,#a968ec,#7540a6);width:100%;margin-top:10px}
  #sfOnlineGate .switch{display:flex;gap:8px;margin:12px 0}#sfOnlineGate .switch button{flex:1}
  #sfOnlineGate .msg{min-height:24px;color:#ffb2c8;font-size:12px;line-height:1.7}
- #sfOnlinePanel{position:fixed;z-index:9998;left:12px;bottom:12px;width:min(360px,calc(100vw - 24px));background:#100b17;border:1px solid #76508e;border-radius:16px;padding:13px;box-shadow:0 12px 45px #000a;color:#fff;font-family:Cairo,sans-serif}
+ #sfOnlinePanel{position:fixed;z-index:9998;right:12px;bottom:12px;width:min(360px,calc(100vw - 24px));background:#100b17;border:1px solid #76508e;border-radius:16px;padding:13px;box-shadow:0 12px 45px #000a;color:#fff;font-family:Cairo,sans-serif}
  #sfOnlinePanel .row{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}#sfOnlinePanel button{flex:1;min-width:90px}
  #sfOnlinePanel input{min-width:0;flex:1;padding:9px;background:#09070d;border:1px solid #493653;color:white;border-radius:8px}
  #sfOnlinePanel small{color:#bcaec8;line-height:1.8;display:block}
- @media(max-width:600px){#sfOnlinePanel{left:8px;bottom:8px}}
+ @media(max-width:600px){#sfOnlinePanel{right:8px;bottom:8px;width:min(340px,calc(100vw - 16px))}}
  `;document.head.append(st);
 }
 function gate(){
@@ -510,7 +512,8 @@ async function init(){
  if(!session){gate();return}
  user=session.user;mountPanel();
 }
-init();
+init().catch(error=>{console.error('SHADOW FILES online init:',error);gate();const msg=document.querySelector('#sfAuthMsg');if(msg)msg.textContent='تعذر الاتصال بالخدمة: '+(error.message||'تحقق من اتصال الإنترنت');});
 })();
 
-</script>\n</body></html>
+</script>
+</body></html>
