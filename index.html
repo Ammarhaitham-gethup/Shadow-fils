@@ -147,23 +147,16 @@ button,.btn{max-width:100%;white-space:normal;overflow-wrap:anywhere;touch-actio
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
 </style>
-<style id="sf-layer-auth-fix">
-/* FIX: keep the investigator gate and online panel above every page layer.
-   The previous body>* rule accidentally overrode their z-index. */
-body>*:not(#sfParticleLayer)#sfOnlineGate{
-  position:fixed!important;
-  inset:0!important;
-  z-index:2147483000!important;
+<style id="sf-pwa-layer-fix">
+/* Keep the investigator access gate above every page layer. */
+body > #sfOnlineGate, body > #sfOnlinePanel {
+  position: fixed !important;
+  isolation: isolate !important;
 }
-body>*:not(#sfParticleLayer)#sfOnlinePanel{
-  position:fixed!important;
-  z-index:2147482999!important;
-  isolation:isolate!important;
-}
-#sfOnlineGate{display:grid!important}
-#sfOnlineGate .panel{position:relative;z-index:1}
+body > #sfOnlineGate { inset: 0 !important; z-index: 2147483000 !important; }
+body > #sfOnlinePanel { z-index: 2147482999 !important; }
+#sfOnlineGate .panel { position: relative; z-index: 1; }
 </style>
-
 </head>
 <body><div class="wrap">
 <header class="topbar"><div class="brand"><div class="sigil">⌕</div><div><h1>SHADOW FILES</h1><p>INTERACTIVE INVESTIGATION SYSTEM</p></div></div><div class="case-chip mono">CLASSIFIED · FILE #0001</div><div class="top-actions"><button class="btn ghost" onclick="editProfile()">البروفايل</button><button class="btn ghost cipher-link" onclick="openCipherSite()">الشفرة السرية</button><button class="btn ghost" onclick="downloadGameInfo()">تحميل / تثبيت</button><button class="btn ghost" onclick="showHelp()">دليل اللعب</button><button class="btn ghost" onclick="resetProgress()">إعادة القضية</button></div></header>
@@ -429,16 +422,15 @@ function gate(){
  const d=document.createElement('div');d.id='sfOnlineGate';
  d.innerHTML=`<div class="panel"><div class="eyebrow">SHADOW FILES / SECURE ACCESS</div><h2>بوابة المحققين</h2><p>سجّل الدخول أو أنشئ حسابًا لتدخل غرف التحقيق مع أصدقائك من أجهزة مختلفة.</p>
  <div class="switch"><button id="sfLoginTab">تسجيل الدخول</button><button id="sfSignupTab">حساب جديد</button></div>
- <input id="sfName" placeholder="اسم المحقق (للحساب الجديد)" maxlength="24">
  <input id="sfUsername" type="text" placeholder="اسم المستخدم" maxlength="24" autocomplete="username">
  <input id="sfPass" type="password" placeholder="كلمة المرور (6 أحرف على الأقل)">
  <button class="primary" id="sfAuthGo">دخول</button><div class="msg" id="sfAuthMsg"></div></div>`;
  document.body.append(d);
  let mode='login';
- const paint=()=>{$('#sfName').style.display=mode==='signup'?'block':'none';$('#sfAuthGo').textContent=mode==='signup'?'إنشاء الحساب':'تسجيل الدخول';$('#sfLoginTab').style.opacity=mode==='login'?1:.55;$('#sfSignupTab').style.opacity=mode==='signup'?1:.55};
+ const paint=()=>{$('#sfAuthGo').textContent=mode==='signup'?'إنشاء الحساب':'تسجيل الدخول';$('#sfLoginTab').style.opacity=mode==='login'?1:.55;$('#sfSignupTab').style.opacity=mode==='signup'?1:.55;$('#sfPass').placeholder='كلمة المرور (6 أحرف على الأقل)';};
  $('#sfLoginTab').onclick=()=>{mode='login';paint()};$('#sfSignupTab').onclick=()=>{mode='signup';paint()};
  $('#sfAuthGo').onclick=async()=>{
-  const username=$('#sfUsername').value.trim().toLowerCase(),password=$('#sfPass').value,name=$('#sfName').value.trim();
+  const username=$('#sfUsername').value.trim().toLowerCase(),password=$('#sfPass').value;
   const email=username+'@shadowfiles.app';
   const msg=$('#sfAuthMsg');msg.textContent='جارٍ الاتصال...';
   if(!/^[a-z0-9_]{3,24}$/.test(username)){msg.textContent='اسم المستخدم: من 3 إلى 24 حرفًا إنجليزيًا أو رقمًا أو _';return;}
@@ -446,10 +438,9 @@ function gate(){
   try{
    let result;
    if(mode==='signup'){
-    if(!name)throw Error('اكتب اسم المحقق.');
-    result=await db.auth.signUp({email,password,options:{data:{display_name:name,username}}});
+    result=await db.auth.signUp({email,password,options:{data:{display_name:username,username}}});
     if(result.error)throw result.error;
-    if(!result.data.session){msg.textContent='الحساب اتعمل لكن تأكيد البريد ما زال مفعّلًا. عطّل Email Confirmations من Supabase Authentication ثم جرّب مرة أخرى.';return;}
+    if(!result.data.session){msg.textContent='تم إنشاء الحساب. يلزم تعطيل تأكيد البريد من إعدادات Supabase حتى يتم الدخول مباشرةً باسم المستخدم وكلمة المرور فقط.';return;}
    }else{
     result=await db.auth.signInWithPassword({email,password});if(result.error)throw Error('اسم المستخدم أو كلمة المرور غير صحيحة.');
    }
@@ -460,7 +451,7 @@ function gate(){
 }
 function mountPanel(){
  if($('#sfOnlinePanel'))return;
- const name=user.user_metadata?.display_name||user.user_metadata?.username||user.email?.split('@')[0]||'محقق';
+ const name=user.user_metadata?.username||user.user_metadata?.display_name||'محقق';
  const p=document.createElement('div');p.id='sfOnlinePanel';
  p.innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px"><b>◈ غرفة التحقيق أونلاين</b><button id="sfLogout" style="border:0;background:none;color:#c8a5e8">خروج</button></div><small>مرحبًا ${esc(name)} · ${esc(user.user_metadata?.username||'حساب محقق')}</small>
  <div class="row"><button id="sfCreateRoom" class="sf-online-btn">إنشاء غرفة</button><input id="sfRoomCode" placeholder="رمز الغرفة" maxlength="8" style="text-transform:uppercase"><button id="sfJoinRoom" class="sf-online-btn">انضمام</button></div>
